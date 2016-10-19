@@ -128,6 +128,9 @@ func Password(q *q29.ReqRsp) {
 					u.Password = session.EncryptPassword(templateVars.Av.Password, u.Passsalt)
 					user.Update(q.M, u)
 					session.Destroy(q.M, q.R, q.W)
+					s := mailgo.Session { Fname: u.Firstname, Lname: u.Lastname, Email: u.Email,}
+					mailgo.NotifyPasswordChange(&s)
+					
 					verify_user_create_session_and_redirect(q, q.U.Username, templateVars.Av.Password, "ulist/profile")
 					return
 				}
