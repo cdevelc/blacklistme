@@ -1,0 +1,20 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">Blacklist</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}blist">Email Address</a>&nbsp;&nbsp;&#8594;&nbsp;
+    {{if $page.Remove}}
+    <strong>Removed</strong>
+    {{else}}
+    <strong>Added</strong>
+    {{end}}
+  </p>
+</nav>
+<div class="gridwrap">
+<div class="theemailaddr">
+  <div class="notice">
+    <p>{{.Vw.FlashMsg}}</p>
+  </div>
+</div>
+</div>
+{{end}}

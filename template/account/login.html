@@ -1,0 +1,33 @@
+{{define "body"}}
+{{$page := .}}
+<script src="{{.Vw.Base}}js/accvallib.js"></script>
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}account">My Account</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Login</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <div class="acct">
+    <h3>Login In to Your Account<span class="right"><a href="{{.Vw.Base}}account/register">Sign Up?</a></span></h3>
+    <form name="login" action="{{.Vw.Base}}account/login" method="POST" onsubmit="return validateForm('login');">
+    <input type="hidden" name="stateToken" value="{{.Av.StateToken}}">                      
+    <ul>
+      <li>
+        <label>Username</label>
+        <input name="username" type="text" maxlength="20" placeholder="Username" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Av.Username}}">
+        <span id="username.errlabel" class="errlabel">{{.Av.ErrorLabel.Username}}</span>
+      </li>
+      <li class="fielderror" id="username.error">{{.Av.Error.Username}}</li>
+      <li>
+        <label>Password</label>
+        <input name="password" type="password" placeholder="Password" autocomplete="off">
+        <span id="password.errlabel" class="errlabel">{{.Av.ErrorLabel.Password}}</span>
+      </li>
+      <li class="fielderror" id="password.error">{{.Av.Error.Password}}</li>
+      <li class="center"><button type="submit">Sign In</button></li>
+      <li class="center"><a href="{{.Vw.Base}}account/forgot">Forgot username or password?</a></li>
+    </ul>
+    </form>
+  </div>
+</div>
+{{end}}

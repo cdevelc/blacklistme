@@ -1,0 +1,17 @@
+{{define "body"}}
+{{$page := .}}
+<div id="ulist">
+  <div id="umenu">
+    <ul>
+      <li class="active"><a href="{{.Vw.Base}}ulist/dashboard">Dashboard</a></li>
+      <li><a href="{{.Vw.Base}}ulist/profile">Profile</a></li>
+      <li><a href="#">Email Blacklist</a></li>
+      <li><a href="#">Personal List</a></li>      
+      <li><a href="#">Domain Lists</a></li>      
+  </div>
+  <div id="ucontent">
+    <h1>Hello&nbsp;{{.Vw.UserFirstname}}&nbsp;{{.Vw.UserLastname}}</h1>
+    <h3>Last logged in on Oct 88, 1888, 08:88 PM</h3>
+  </div>    
+</div>
+{{end}}

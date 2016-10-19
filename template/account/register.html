@@ -1,0 +1,71 @@
+{{define "body"}}
+{{$page := .}}
+<script src="{{.Vw.Base}}js/accvallib.js"></script>
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}account">My Account</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Sign Up</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <div class="acct">
+    <h3>Create An Account <span class="right"><a href="{{.Vw.Base}}account/login">Log In?</a></span></h3>
+    <form name="register" action="{{.Vw.Base}}account/register" method="POST" onsubmit="return validateForm('register')">
+    <input type="hidden" name="stateToken" value="{{.Av.StateToken}}">
+    <ul>
+      <li>New to BlacklistMe?  Quickly sign up for an account right here.</li>
+      <li>
+        <label>Username</label>
+        <input name="username" type="text" maxlength="20" placeholder="Username" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Av.Username}}">
+        <span id="username.errlabel" class="errlabel">{{.Av.ErrorLabel.Username}}</span>
+      </li>
+      <li class="fielderror" id="username.error">{{.Av.Error.Username}}</li>
+      <li>All new passwords must contain at least 8 characters.  We strongly suggest you use at least one capital, one number and one special symbol (#,&, %, etc.) for the best strength.</li>
+      <li>
+        <label>Password</label>
+        <input name="password" type="password" placeholder="Password" autocomplete="off">
+        <span id="password.errlabel" class="errlabel">{{.Av.ErrorLabel.Password}}</span>
+      </li>
+      <li class="fielderror" id="password.error">{{.Av.Error.Password}}</li>
+      <li>
+        <label>Confirm Password</label>
+        <input name="passagain" type="password" placeholder="Password" autocomplete="off">
+        <span id="passagain.errlabel" class="errlabel">{{.Av.ErrorLabel.Passagain}}</span>
+      </li>
+      <li class="fielderror" id="passagain.error">{{.Av.Error.Passagain}}</li>
+      <li>
+        <label>First Name</label>
+        <input name="firstname" type="text" maxlength="32" placeholder="First Name" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Av.Firstname}}">
+        <span id="firstname.errlabel" class="errlabel">{{.Av.ErrorLabel.Firstname}}</span>
+      </li>
+      <li class="fielderror" id="firstname.error">{{.Av.Error.Firstname}}</li>
+      <li>
+        <label>Last Name</label>
+        <input name="lastname" type="text" maxlength="32" placeholder="Last Name" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Av.Lastname}}">
+        <span id="lastname.errlabel" class="errlabel">{{.Av.ErrorLabel.Lastname}}</span>        
+      </li>
+      <li class="fielderror" id="lastname.error">{{.Av.Error.Lastname}}</li>
+      <li>
+        <label>Email Address</label>
+        <input name="email" type="text" maxlength="60" placeholder="Email Address" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Av.Email}}">
+        <span id="email.errlabel" class="errlabel">{{.Av.ErrorLabel.Email}}</span>        
+      </li>
+      <li class="fielderror" id="email.error">{{.Av.Error.Email}}</li>
+      <li>By creating an account, you agree to our <a href="#">Terms of Service</a></li>
+      <li class="center"><button type="submit">Create Account</button></li>
+    </ul>
+    </form>
+  </div>
+<script>
+  var cyc=1;    
+  $(document).ready(function() {
+  $('input').focus(function() {
+    $('#groundy').css({top: 0, left: cyc+'0%', position: 'absolute'});
+    if (++cyc==10) { cyc=0; }
+  });
+});
+</script>
+<div style="position: relative;">
+  <img id="groundy" style="float: left; position: absolute; top: 0; left: 5%;height: 125px; width: 125px;" src="{{$page.Vw.Base}}img/groundh2.png" >    
+</div>
+</div>
+{{end}}

@@ -1,0 +1,37 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">Blacklist</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}blist">Email Address</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Dump</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <table>
+    <tr><th>Email</th><th>Created</th><th>SHA256 Signature</th></tr>
+    {{with .Em}}
+    {{range .}}
+    <tr>
+      <td>{{.Email}}</td>
+      <td style="min-width: 180px;">{{.Created}}</td>
+      <td>{{.Sha256}}</td>
+    </tr>
+    {{end}}
+    {{end}}
+  </table>
+  <table>
+    <tr><th>Username</th><th>Email</th><th>First</th><th>Last</th><th>PW</th></tr>
+    {{with .Us}}
+    {{range .}}
+    <tr>
+      <td>{{.Username}}</td>
+      <td>{{.Email}}</td>
+      <td>{{.Firstname}}</td>
+      <td>{{.Lastname}}</td>
+      <td>{{.Password}}</td>
+    </tr>
+    {{end}}
+    {{end}}
+  </table>
+</div>
+{{end}}

@@ -1,0 +1,119 @@
+/*
+ */
+#umenu {
+ width: 12em;
+ display: block;
+ float: left;
+ background-color: #2e3032;
+ height: 100%;
+ z-index: 1;
+}
+
+#umenu ul {
+ margin: 0;
+ padding: 0;
+ font-size: 1em;
+ list-style-type: none;
+}
+
+#umenu ul li {
+ position: relative;    
+ width: 100%;
+ border-bottom: 1px solid #999999;
+ height: 80px;
+ padding: 30px 0 0 40px;
+}
+
+#umenu ul li a {
+ text-align: left;
+ font-size: 1em;
+ font-weight: bold;
+/* letter-spacing: .125em; */
+ color: #a8a8a6;
+}
+#umenu ul li.active {
+ background-color: #3b9712;
+}
+#umenu ul li.active a {
+ color: #fff;
+}
+#umenu ul li.active:before {
+ content: '';
+ position: absolute;
+ border-left: none;
+ border-right: 10px solid #fff;
+ border-top: 10px solid transparent;
+ border-bottom: 10px solid transparent;
+ margin-left: 0;
+ margin-top: -10px;
+ top: 50%;
+ left: auto;
+ right: 0;
+ z-index: 1;
+}
+
+#ucontent {
+ padding: 10px 0 0 250px;
+}
+#ucontent h1 {
+ margin: 0;
+ padding: 10px 0 0 0;
+ font-weight: normal;    
+}
+#ucontent h3 {
+ margin: 0;
+ padding: 6px 0 0 0;    
+ font-size: .875em;
+ font-weight: bold;
+}
+.utable {
+ width: 90%;
+ display: table;
+}
+.utable .row {
+ margin: 0 auto;
+ padding: .5em;
+ width: 100%
+ display: table-row;
+ clear: both;
+}
+.utable hr {
+ border: none;
+ border-top: 1px solid #3b9712;
+ margin: 0;
+}
+.utable hr.hrg {
+ margin: 1em 0 0 0;
+ border-top: 1px solid #d6d6d6;
+}
+.utable .cell {
+ display: table-cell;
+ float: left;
+}
+.utable .cell .w1 { width: 20%; }
+.utable .cell .w2 { width: 60%; }
+.utable .cell .w3 { width: 20%; }
+
+.utable a.btn {
+ margin0: 0 0 2em 0;
+ padding: 0.5em 1.125em;
+ text-shadow: 0 -1px 1px #fff;
+ font-size: .75em;
+ font-weight: bold;
+ text-align: center;
+ line-height: 1.6667em;
+ text-transform: uppercase;
+ color: #6d6e70;
+ box-shadow: 0 1px 0 rgba(0,0,0,0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8); 
+ background: linear-gradient(to bottom, #fefefe 0%, #ededed 100%);
+ border: 1px solid #b8b8b8;
+ border-radius: 5px;
+}
+.utable a.btn:hover {
+ background: linear-gradient(to bottom, #eff0f0 0%, #cacccb 100%);
+ text-shadow: none;
+}
+.utable a.btn:active {
+ background: linear-gradient(to bottom, #d3d5d5 0%, #fafafa 100%);
+ text-shadow: none;
+}

@@ -1,0 +1,98 @@
+{{define "body"}}
+{{$page := .}}
+<script>
+$(document).ready(function() {
+$('#infotab ul li a').click(function() {
+ $('#infotab ul li').removeClass('selected');
+ $(this).parent().addClass('selected');
+ var newTab = $(this).attr('href');
+ $('#infotab div.tabpanel').hide();
+ $(newTab).addClass('selected');
+ $(newTab).show();
+});
+});
+function HideErrorMessage()
+{
+  document.getElementById('errorwrap').style.display = "none";
+}
+function ValidateEmail()
+{
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(blacklistForm.email.value)) {
+    return true;
+  }
+  document.getElementById('errorwrap').style.display = "block";
+  setTimeout("HideErrorMessage()", 4000);
+  return false;
+}
+</script>
+<div id="home">
+  <div class="headline">
+    <h1>Black List Me</h1>
+    <h2>Keep my old address out of the inbox</h2>
+    <form name="blacklistForm" method="get" action="{{.Vw.Base}}blist/inquire" id="blacklistForm">
+    <fieldset>
+      <input name="email" autocomplete="off" placeholder="Email address to retire" autocorrect="off" spellcheck="false" autocapitalize="off">
+      <button type="submit" onclick="return ValidateEmail();">Inquire</button>
+    </fieldset>
+    </form>
+    <div id="errorwrap" style="display:none">
+      <div class="inputerror"><span>This email address is not properly formatted.</span></div>
+    </div>
+  </div>
+</div>  
+<div id="infotab">
+  <div class="tablist">  
+  <span class="label">Blacklistme for</span>
+  <ul>
+    <li class="tab selected"><a href="#tab1">One and Done</a></li>
+    <li class="tab"><a href="#tab2">Individuals</a></li>
+    <li class="tab"><a href="#tab3">Business</a></li>
+  </ul>
+  </div>
+  <div class="tabpanel selected" id="tab1">
+    <div class="headline"><h2>Eliminate your old email address from spam</h2></div>
+    <div class="gridrow">
+      <div class="griditem"><h3>Provide Email Address</h3>
+        <p>It only takes a few seconds.  Tell us an email address that you no longer use, never send from, and don't want used by spammers.</p>
+      </div>
+      <div class="griditem"><h3>Verify Ownership</h3>
+        <p>We will send a verification message to that address.  You simply click on the message URL and we will take it from there.</p>
+      </div>
+      <div class="griditem"><h3>Rest Easy</h3>
+        <p>Mail servers and processors that access our API will know immediately that your old address should never appear in the From: field of an email.  Spammers using that address will be frustrated.</p>
+      </div>
+    </div>
+    <img style="float: left;" src="{{$page.Vw.Base}}img/groundh2.png" >    
+  </div>
+  <div class="tabpanel" id="tab2">
+    <div class="headline"><h2>Use our lists and yours to filter email</h2></div>
+    <div class="gridrow">
+      <div class="griditem"><h3>Your Server</h3>
+        <p>Every day your mail server is bombarded with spam.  Spamassassin is doing all it can, but you want more (well less, actually).</p>
+      </div>
+      <div class="griditem"><h3>Known Spammy Addresses</h3>
+        <p>You can improve Spamassassin's results by keeping a blacklist here.  You get the benefits of BlacklistMe's global list, plus your own list of most detested email sources will be blocked.</p>
+      </div>
+      <div class="griditem"><h3>Fewer Headaches</h3>
+        <p>Our user interface makes it really easy to add and delete addresses.  Our API allows Spamassassin to quickly verify and score messages with bogus From: addresses.</p>
+      </div>
+    </div>
+    <img style="" src="{{$page.Vw.Base}}img/groundh2.png" >        
+  </div>
+  <div class="tabpanel" id="tab3">
+    <div class="headline"><h2>Manage your domain with active users</h2></div>    
+    <div class="gridrow">
+      <div class="griditem"><h3>Your Business</h3>
+        <p>Is your company's mail server under seige by spammers and malware distributors?  Let blacklistme in addition to your own company's email history help mitigate the problem.</p>
+      </div>
+      <div class="griditem"><h3>Old Employee Addresses</h3>
+        <p>Employees come and go, but sometimes their email addresses live on for far too long.  You can improve Spamassassin's results by keeping a blacklist of ex-employees here.</p>
+      </div>
+      <div class="griditem"><h3>Fast and Easy</h3>
+        <p>Our easy list management system and API allow Spamassassin to rapidly score and label email from ex-employees as spam.  Remember, your ex-employees are not even sending this junk.  Spammers are using their old addresses to infiltrate your network.</p>
+      </div>
+    </div>
+    <img style="float: right;" src="{{$page.Vw.Base}}img/groundh2.png" >            
+  </div>
+</div>
+{{end}}

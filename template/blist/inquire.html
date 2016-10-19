@@ -1,0 +1,33 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">Blacklist</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}blist">Email Address</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Inquiry</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+<div class="theemailaddr">
+  <h2><span {{if $page.Found}}class="found"{{end}}>{{$page.Email}}</span></h2>
+  <div class="notice">
+    {{if $page.Found}}
+    <p>This email address is already in our blacklist.  If you are the owner of this address and you no longer want it in the blacklist then click <strong>remove</strong> below.</p>    
+    {{else}}
+    <p>This email address is not currently in our blacklist. If you are the owner of this address you may add it to the blacklist by clicking below.</p>
+    {{end}}
+  </div>
+</div>
+<div class="theemailcrud">
+  <form name="blacklistForm" method="post" action="{{.Vw.Base}}blist/addrem" id="blacklistForm">
+    <fieldset>
+      <input name="email" value="{{$page.Email}}" readonly >
+      {{if $page.Found}}
+      <button type="submit">Remove</button>
+      {{else}}
+      <button type="submit">Blacklist</button>
+      {{end}}
+    </fieldset>
+  </form>
+</div>
+</div>
+{{end}}

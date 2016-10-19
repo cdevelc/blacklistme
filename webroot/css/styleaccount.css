@@ -1,0 +1,101 @@
+/* styleaccount.css
+ */
+
+div.acct {
+ margin: 0 auto 2em auto;
+ width: 75%;
+ border-radius: 5px;
+ background: #f2f2f2;
+ line-height: 1.5;
+}
+.acct h3 {
+ font-size: 1.125em;
+ line-height: 1.33;
+ font-weight: bold;
+ color: #fff;
+ padding: 1em;
+ background: #6d6e70;
+ border-top-left-radius: 5px;
+ border-top-right-radius: 5px;
+}
+.acct h3 span.right {
+ float: right;
+}
+.acct h3 a {
+ font-size: .75em;
+ line-height: 1.24;
+ font-weight: bold;
+ text-transform: uppercase;
+ color: #fff;
+ text-decoration: none;
+}
+.acct ul {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+}
+.acct ul li {
+ padding: 1.125em 1em;
+ clear: both;
+}
+.acct ul li.center {
+ text-align: center;    
+}
+.acct label {
+ margin: 0;
+ padding: .3em 0 0 0;
+ width: 30%;
+ display: inline-block;
+ float: left;
+ font-weight: bold;
+}
+.acct input {
+ padding: .5em;    
+ float: left;
+ width: 45%;
+ border: 1px solid #d6d6d6;
+ border-radius: 5px;
+ background: #fff;
+ display: inline-block;
+}
+.acct a {
+ text-decoration: none;
+ color: #de3723;    
+}
+.acct a:hover {
+ text-decoration: underline;
+}
+
+.acct button {
+ padding: .5em;    
+ border-radius: 5px;
+ background: linear-gradient(to bottom, #fd4f00 0%, #de3723 100%);
+ border: 1px solid #de3723;
+ font-size: 1.33em;
+ color: #fff;
+}
+.acct button:hover {
+ background: linear-gradient(to bottom, #e03b2e 0%, #d02a2d 100%);
+}
+.acct button:active {
+ background: linear-gradient(to bottom, #de3723 0%, #fd4f00 100%);
+}
+.acct li.fielderror {
+ padding: .25em 0 0 0;
+ margin: 0;
+ padding-left: 33%;
+ font-size: .85em;
+ color: #de3723;
+}
+
+.acct span.errlabel {
+ padding: .6em 1.1em;
+ font-size: .875em;
+ font-weight: bold;
+ text-transform: uppercase;
+ color: #de3723;
+}
+
+.acct a.cancel {
+ padding-left: 20px;    
+}
