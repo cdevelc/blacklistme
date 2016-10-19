@@ -57,7 +57,7 @@ func Logout(q *q29.ReqRsp) {
 	mgs.Fname = "Chris"
 	mgs.Lname = "Cochrane"
 	mgs.Email = "cdc@post.com"
-	mailgo.ConfirmEmailChange( &mgs, "cdc@post.com")
+	mailgo.NotifyPasswordChange( &mgs)
 	
 	session.Destroy(q.M, q.R, q.W)	
 	q29.Redirect(q, "/")
