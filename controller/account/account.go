@@ -53,12 +53,6 @@ func Login(q *q29.ReqRsp) {
 }
 
 func Logout(q *q29.ReqRsp) {
-	var mgs mailgo.Session
-	mgs.Fname = "Chris"
-	mgs.Lname = "Cochrane"
-	mgs.Email = "cdc@post.com"
-	mailgo.NotifyPasswordChange( &mgs)
-	
 	session.Destroy(q.M, q.R, q.W)	
 	q29.Redirect(q, "/")
 }
@@ -84,9 +78,38 @@ func Register(q *q29.ReqRsp) {
 	u.Passsalt = session.ShakeSalt(u.Email)
 	u.Password = session.EncryptPassword(templateVars.Av.Password, u.Passsalt)
 	u.Firstname = templateVars.Av.Firstname
-	u.Lastname  = templateVars.Av.Lastname	
+	u.Lastname  = templateVars.Av.Lastname
+	u.Confirmed = false
+	s := mailgo.Session {
+		Fname: u.Firstname,
+		Lname: u.Lastname,
+		Email: u.Email,
+		URL: "http://"+q.R.Host+q29.AssetURL(q, "account/confirm?vps=")+u.Passsalt,
+	}
+	mailgo.ConfirmRegistration(&s)
 	user.Add(q.M, &u)
-	verify_user_create_session_and_redirect(q, templateVars.Av.Username, templateVars.Av.Password, "ulist/dashboard")
+	q29.Redirect(q, "account/thanks")	
+}
+
+func Thanks(q *q29.ReqRsp) {
+	var page struct {
+		Vw q29.View
+	}
+	q29.Render(q, &page)
+}
+
+func Confirm(q *q29.ReqRsp) {
+	var page struct {
+		Vw q29.View
+	}
+	var u *user.User
+	
+	u = user.FindByPasssalt(q.M, q.R.URL.Query().Get("vps"))
+	if u != nil {
+		u.Confirmed = true
+		user.Update(q.M, u)
+	}
+	q29.Render(q, &page)			
 }
 
 func Password(q *q29.ReqRsp) {
@@ -127,12 +150,3 @@ func Forgot(q *q29.ReqRsp) {
 	}
 	q29.Render(q, &page)		
 }
-
-func Profile(q *q29.ReqRsp) {
-	var page struct {
-		Vw q29.View
-	}
-	q29.Render(q, &page)		
-}
-
-

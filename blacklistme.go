@@ -43,7 +43,8 @@ func Dispatch(q *q29.ReqRsp) {
 		case "login":          account.Login(q)
 		case "logout":         account.Logout(q)
 		case "register":       account.Register(q)
-		case "profile":        account.Profile(q)
+		case "thanks":         account.Thanks(q)
+		case "confirm":        account.Confirm(q)
 		case "forgot":         account.Forgot(q)
 		case "password":       account.Password(q)
 		default:
