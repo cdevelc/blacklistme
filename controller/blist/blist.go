@@ -6,6 +6,7 @@ import "regexp"
 import "q29"
 import "q29/user"
 import "blacklistme/model/emaddr"
+import "github.com/mailgo"
 
 const regexEmailValue string = "^(((([a-zA-Z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])+(\\.([a-zA-Z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\x5b]|[\\x5d-\\x7e]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(\\x22)))@((([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])([a-zA-Z]|\\d|-|\\.|_|~|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])*([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])))\\.)+(([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])([a-zA-Z]|\\d|-|\\.|_|~|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])*([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])))\\.?$"
 
@@ -35,43 +36,86 @@ func Inquire(q *q29.ReqRsp) {
 		http.Error(q.W, q.R.URL.Path+" invalid email address", 404)
 		return
 	}
-	page.Found = emaddr.Find(q.M, page.Email, &page.EmAddr)
+	page.Found = emaddr.Find(q.M, "blacklist", page.Email, &page.EmAddr)
 	q29.Render(q, &page)	
 }
 
 func AddRem(q *q29.ReqRsp) {
-	var email   string
+	var page struct {
+		Email   string
+		AddRem  string
+		Vw      q29.View
+	}
 	var found   bool		
 	var emAddr  emaddr.Emaddr
-	
+
 	q.R.ParseForm()
-	email = q.R.FormValue("email")
-	if rxEmail.MatchString(email) == false {
+	page.Email = q.R.FormValue("email")
+	if rxEmail.MatchString(page.Email) == false {
 		http.Error(q.W, q.R.URL.Path+" invalid email address", 404)
 		return
 	}
-	found = emaddr.Find(q.M, email, &emAddr)
+	found = emaddr.Find(q.M, "blacklist", page.Email, &emAddr)
+
 	if found == true {
-		emaddr.Delete(q.M, emAddr.Id);
-		q29.SetFlash(q, "The email address "+email+" has been removed from the global blacklistme database.")
-		q29.Redirect(q, "blist/complete/remove")		
+		page.AddRem = "remove"
+		s := mailgo.Session {
+			Email: page.Email,
+			URL: "http://"+q.R.Host+q29.AssetURL(q, "blist/complete/remove?vps=")+emAddr.Sha256,
+		}
+		mailgo.ConfirmEmailAddressUnBlacklist(&s)
+		
 	} else {
-		emAddr.Email = email;
-		emaddr.Upsert(q.M, &emAddr);
-		q29.SetFlash(q, "The email address "+email+" has been added to the global blacklistme database.")
-		q29.Redirect(q, "blist/complete")			
+		page.AddRem = "add"
+		emAddr.Email = page.Email;		
+		emaddr.Upsert(q.M, "blacklistwannabe", &emAddr);		
+		s := mailgo.Session {
+			Email: page.Email,
+			URL: "http://"+q.R.Host+q29.AssetURL(q, "blist/complete?vps=")+emAddr.Sha256,
+		}
+		mailgo.ConfirmEmailAddressBlacklist(&s)		
+
 	}
+	page.Vw.Template = "blist/request"
+	q29.Render(q, &page)
 }
 
 func Complete(q *q29.ReqRsp) {
 	var page struct {
 		Remove bool
+		Email string
 		Vw q29.View
 	}
-	page.Remove = false
+	var emAddr emaddr.Emaddr
+	var found bool
+
+	sig := q.R.URL.Query().Get("vps")
 	chunks := strings.Split(q.R.URL.Path, "/")
-	if chunks[len(chunks)-1] == "remove" {
-		page.Remove = true
+	found = false
+
+	if len(sig) > 0 {
+		if chunks[len(chunks)-1] == "remove" {
+			page.Remove = true
+			found = emaddr.FindBySig(q.M, "blacklist", sig, &emAddr)
+			if found == true {
+				page.Email = emAddr.Email				
+				emaddr.Delete(q.M, "blacklist", emAddr.Id)
+			}
+			
+		} else { /* add request confirmed */
+			page.Remove = false
+			found = emaddr.FindBySig(q.M, "blacklistwannabe", sig, &emAddr)
+			if found == true {
+				page.Email = emAddr.Email
+				emaddr.Delete(q.M, "blacklistwannabe", emAddr.Id)
+				emAddr.Id = ""
+				emaddr.Upsert(q.M, "blacklist", &emAddr)
+			}
+		}
+	}
+	if found == false {
+		http.Error(q.W, q.R.URL.Path+" invalid confirmation", 404)
+		return
 	}
 	q29.Render(q, &page)
 }
@@ -82,7 +126,7 @@ func Dump(q *q29.ReqRsp) {
 		Us []user.User
 		Vw q29.View
 	}
-	emaddr.List(q.M, &page.Em)
+	emaddr.List(q.M, "blacklist", &page.Em)
 	user.List(q.M, &page.Us)
 	q29.Render(q, &page)
 }

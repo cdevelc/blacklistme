@@ -22,7 +22,7 @@ func Index(q *q29.ReqRsp) {
 	emad.Email = q.R.URL.Query().Get("email")
 	jresponse.Email = emad.Email
 	jresponse.Blacklist = "no"
-	found := emaddr.Find(q.M, emad.Email, &emad)
+	found := emaddr.Find(q.M, "blacklist", emad.Email, &emad)
 	if found == true { jresponse.Blacklist = "yes" }
 	js, err := json.Marshal(jresponse)
 	if err != nil {

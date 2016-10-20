@@ -1,0 +1,17 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">Blacklist</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}blist">Email Address</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Request</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+<div class="theemailaddr">
+  <h2>Database Request is in Progress</h2>
+  <div class="notice">
+    <p>Your request to {{.AddRem}} the address <strong>{{.Email}}</strong> is now being processed.  We have sent an email to this address.  In order to complete the request you must visit the URL contained in the email.  We do not add or remove addresses in our database without confirmation.</p>
+  </div>
+</div>
+</div>
+{{end}}

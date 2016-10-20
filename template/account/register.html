@@ -56,8 +56,8 @@
     </form>
   </div>
 <script>
-  var cyc=1;    
-  $(document).ready(function() {
+var cyc=1;    
+$(document).ready(function() {
   $('input').focus(function() {
     $('#groundy').css({top: 0, left: cyc+'0%', position: 'absolute'});
     if (++cyc==10) { cyc=0; }

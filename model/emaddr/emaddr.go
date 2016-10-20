@@ -16,11 +16,11 @@ type Emaddr struct {
 	Sha256    string
 }
 
-func List(m *mgo.Session,em *[]Emaddr) {
-	m.DB("").C("blacklist").Find(nil).Sort("email").All(em)
+func List(m *mgo.Session, collection string, em *[]Emaddr) {
+	m.DB("").C(collection).Find(nil).Sort("email").All(em)
 }
 
-func Upsert(m *mgo.Session, em *Emaddr) bool {
+func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
   var selector bson.M 
 
 	if em.Id == "" { //new email addr, first insertion
@@ -30,29 +30,38 @@ func Upsert(m *mgo.Session, em *Emaddr) bool {
 	} else {
 		selector = bson.M{"_id": em.Id}	
 	}
-	changeInfo,err := m.DB("").C("blacklist").Upsert(selector, em)
+	changeInfo,err := m.DB("").C(collection).Upsert(selector, em)
 	if err == nil {
 		if em.Id == "" { em.Id = changeInfo.UpsertedId.(bson.ObjectId) }
 		return true
 	}
-	log.Printf("blacklist Upsert: %s\n", err)
+	log.Printf("%s Upsert: %s\n", collection, err)
 	return false
 }
 
-func Delete(m *mgo.Session, id bson.ObjectId) bool {
+func Delete(m *mgo.Session, collection string, id bson.ObjectId) bool {
 	if id != "" {
-		err := m.DB("").C("blacklist").Remove(bson.M{"_id": id})
+		err := m.DB("").C(collection).Remove(bson.M{"_id": id})
 		if err == nil { return true }
-		log.Printf("blacklist Delete: %s\n", err)
+		log.Printf("%s Delete: %s\n", collection, err)
 	}
 	return false
 }
 
-func Find(m *mgo.Session, e string, em *Emaddr) bool {
-	err := m.DB("").C("blacklist").Find(bson.M{"email": e}).One(em)
+func Find(m *mgo.Session, collection string, e string, em *Emaddr) bool {
+	err := m.DB("").C(collection).Find(bson.M{"email": e}).One(em)
 	if err == nil { return true }
 	if err.Error() != "not found" {
-		log.Printf("blacklist Find: %s\n", err)
+		log.Printf("%s Find: %s\n", collection, err)
+	}
+	return false
+}
+
+func FindBySig(m *mgo.Session, collection string, sig string, em *Emaddr) bool {
+	err := m.DB("").C(collection).Find(bson.M{"sha256": sig}).One(em)
+	if err == nil { return true }
+	if err.Error() != "not found" {
+		log.Printf("%s Find: %s\n", collection, err)
 	}
 	return false
 }

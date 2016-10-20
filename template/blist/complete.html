@@ -13,7 +13,11 @@
 <div class="gridwrap">
 <div class="theemailaddr">
   <div class="notice">
-    <p>{{.Vw.FlashMsg}}</p>
+    {{if $page.Remove}}
+    <p>The email address <strong>{{$page.Email}}</strong>&nbsp;has been removed from the global BlackListMe database.</p>
+    {{else}}
+    <p>The email address <strong>{{$page.Email}}</strong>&nbsp;has been added to the global BlackListMe database.</p>    
+    {{end}}
   </div>
 </div>
 </div>

@@ -18,7 +18,7 @@
   </div>
 </div>
 <div class="theemailcrud">
-  <form name="blacklistForm" method="post" action="{{.Vw.Base}}blist/addrem" id="blacklistForm">
+  <form name="blacklistForm" method="GET" action="{{.Vw.Base}}blist/addrem" id="blacklistForm">
     <fieldset>
       <input name="email" value="{{$page.Email}}" readonly >
       {{if $page.Found}}
