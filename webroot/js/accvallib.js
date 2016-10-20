@@ -128,3 +128,13 @@ function vernam_decipher(q,x) {
    }
  return r;
 }
+
+
+$(document).ready(function() {
+  $('input').focus(function() {
+    var key=$(this).attr("name");
+    document.getElementById(key+".error").innerHTML = "";
+    document.getElementById(key+".errlabel").innerHTML = "";        
+  });
+});
+
