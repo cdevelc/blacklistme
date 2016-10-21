@@ -5,6 +5,7 @@ import "q29"
 import "blacklistme/controller/blist"
 import "blacklistme/controller/ulist"
 import "blacklistme/controller/account"
+import "blacklistme/controller/support"
 import "blacklistme/controller/api"
 
 func Init() {
@@ -28,7 +29,7 @@ func Dispatch(q *q29.ReqRsp) {
 		}
 
 	case "ulist":
-		if !blist.BeforeFilter(q) { return }
+		if !ulist.BeforeFilter(q) { return }
 		switch (q.Action) {
 		case "index":          ulist.Dashboard(q)
 		case "dashboard":      ulist.Dashboard(q)
@@ -58,6 +59,16 @@ func Dispatch(q *q29.ReqRsp) {
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
+
+	case "support":
+		if !support.BeforeFilter(q) { return }
+		switch (q.Action) {
+		case "faq":          support.FAQ(q)
+		default:
+			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
+		}
+
+		
 	default: 
 		http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 	}

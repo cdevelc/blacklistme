@@ -1,0 +1,103 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">Blacklist</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}blist">Support</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>FAQ</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <div class="faqList">
+    <h2>Frequently Asked Questions</h2>    
+    <div class="faqEntry">
+      <a class="faqQ">What is the Purpose of BlackListMe?</a>
+      <div class="faqA"><p>BlackListMe is a web service that allows end users to announce globally that an email address is no longer used and email from that address should be treated as spam.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">Why is BlackListMe needed?</a>
+      <div class="faqA"><p>BlackListMe is intended to prevent your email address from being used in a phishing attack.</p>
+<p>A phishing attack is an email which either contains malware itself or has links to malware websites. An unfortunate recipient can have their computer compromised if they click on the link or download the attachment. Many people are now wary of such emails, but a particularly effective method of distributing such email is to obtain real email address and, ideally, email recipients who have received legitimate mail from that address in the past. With their guard down, they may be susceptible to a message such as</p>
+<p>"Hi, Here's a link to the topic we were discussing <Link>"</p>
+<p>The point of BlackListMe is, should you discover your email address is being used in this manner, to allow you to flag that email address so that email servers who are delivering mail to recipients can either drop the mail, or flag it as suspect.</p>        
+      </div>
+    </div>      
+    <div class="faqEntry">
+      <a class="faqQ">How can someone send an email that looks like it is from me?</a>
+      <div class="faqA">
+<p>Unfortunately, this is all too easy. The email system we use today has its roots in a time when the internet was a small, trusted community. It was not built with the notion that there would be bad actors. An email with a return address of <u>joe@yahoo.com</u>, can be sent from anywhere to anyone without Joe being the wiser.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">Shouldn't email vendors fix this?</a>
+      <div class="faqA"><p>Absolutely. And there are multiple methods in use today to try and prevent this impersonation. Unfortunately, they are not completely successful, largely because there is no way to force everyone sending or receiving mail to upgrade to a new system simultaneously. An email server receiving an email can't be sure if an email is suspect, or if it was sent from an older mailer. We'll cover this in much more detail later in this FAQ, but the IETF has standards such as DKIM, and DMARC which help to verify a user with a source network, but they are not infallible. An email recipient still has to make a judgement call about the validity of an email.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">How does BlackListMe address the problem?</a>
+      <div class="faqA"><p>BlackListMe removes the ambiguity regarding a compromised email address. When a user registers an email address with BlackListMe, email servers can check our database to see if that email is no longer valid and either it, or mark it as suspect.</p>
+<p>Let's look at this in a little more detail in the drawing below.</p>
+<img src="{{.Vw.Base}}img/faq5.png">
+<p>In the diagram, the blue boxes are mail servers and the figure mentions they have spam filters. What is a spam filter? Most commercial mailers now have very sophisticated algorithms that are run on mail to try and detect spam. They can examine the contents of the message to see if matches known patterns or if it contains a virus. They can examine the email addresses, source, destination, reply-to etc., to see if they are coming from suspect domains. They can examine IP addresses to see if they are coming from known bad servers etc. These filters are very effective but, because the bad actors know they are there, they constantly change tactics to avoid being flagged by the filter.</p>
+<p>BlackListMe will add an additional check to the spam filter. When an email is received by a server, before forwarding it, it can query the BlackListMe server (the orange lines in the drawing) to see if the from or reply-to email addresses are on our list. If it is, the message can be dropped or at least flagged as a potentially dangerous email. The action taken is up to the administrator of each of the servers.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">How do you prevent an email from being incorrectly registered?</a>
+      <div class="faqA"><p>You may be concerned that a bad actor could register a different person's email in the blacklist resulting in their mail being effectively blocked. We prevent that by sending a confirmation email to the email address being blacklisted. If there is no reply, the email is not added to the list.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">How do you prevent the blacklist email list from being stolen and used?</a>
+      <div class="faqA"><p>BlackListMe has a huge database, we don't want it to become a target and source of email addresses for spammers. To prevent this, we don't keep the email addresses! The next question is then, how do we determine if an email address is blacklisted? When we have confirmed the owner of an email address, we perform a mathematical operation on the email address called a one-way hash. The generates a long number that is unique to that email address. We then discard the address. There are two fun things about this. The first is that the operation is one-way. Having the number does not allow you to reverse the process and generate the original email address. The second is that is it unique to that email address &dash; so two email addresses won't generate the same number. Now, when a query comes in, we repeat the hash and examine our database to see if that hashed value is in the database. An attacker can steal the database, but it will not help them generate addresses to use for spam. Naturally, we protect our site as much as possible to prevent even this breach, but, recent news demonstrates that this is extremely difficult to absolutely prevent.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">How do I know my email address has been compromised?</a>
+      <div class="faqA">
+<p>You can detect this in a few ways:</p>
+<ol>
+<li>Your mother/boss/wife/kids calls you asking why you are sending emails with such inappropriate content!</li>
+<li>You are getting bounce messages from mailing lists that you did not send mail too.</li>
+<li>You may be messages from mail services suggesting you are sending inappropriate material.</li>
+</ol>
+<p>Note that there are at least two ways this can happen. 1) a bad actor is using your email address or 2) a bad actor has access to your email account. The latter should be immediately addressed by changing your email account password and any account reminders.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">What if I don't want to retire my email address?</a>
+      <div class="faqA"><p>BlackListMe is specifically targeting spammers who are using real email addresses to send spam or phishing emails. Once a spammer has your email address, there is really little more that you can do. We recommend retiring the email address and switching to a new one. There is no reason to immediately close the compromised account. You can leave that open but don't send email from it. You can forward email from that account to your new account so you don't miss emails sent to the old account. You can also monitor the account to check for unexpected activity.</p>
+      </div>
+    </div>
+    <div class="faqEntry">
+      <a class="faqQ">What email standards try to address impersonation or spoofing?</a>
+      <div class="faqA">
+<p>This section gets rather detailed and is only for the very interested.
+
+<p>The Internet Engineering Task Force (IETF) has developed 3 approaches to prevent spoofing of email addresses. While BlackListMe specifically lists email addresses, these IETF approaches tend to try to verify the networks and domains associated with an email address. The approaches are DomainKeys Identified Mail (DKIM), Sender Policy Framework (SPF) and Domain-based Message Authentication, Reporting and Conformance (DMARC).</p>
+
+<p>DKIM answers the question "Why don't you verify the sender when you get an email?". If the sender were a person, you might have them sign mail before sending it and then look at their signature on receipt and see if looks right. Similarly, in the digital world, we verify a source by having them digitally sign a document and then check it at receipt.</p>
+
+<p>Digitally signing is a pretty common cryptographic operation so we'll just review it briefly here. You can find out much, much more by googling (or Binging) for it. A sender has a pair of numbers called a public/private key pair. This pair has a unique property. If a sender encrypts/hashes a message (or any sequence of numbers/characters) using the private key, the operation can be reversed with the pubic key and the original message returned. So, to make use of this, a potential receiver gets a copy of the public key and then the sender encrypts/hashes a sequence and sends it to the receiver. The receiver applies the public key. If the original message is returned, the receiver knows the only person who could have sent it is someone with the private key. The private key is, naturally, kept private by the sender.</p>
+
+<p>Naturally, you are wondering how the receiver got the public key. I'm sure you are thinking of the web which uses this same kind of identification technique. There, each browser is shipped with the pubic key of something called a Certificate Authority (CA) as well as their Fully Qualified Domain Name. By using them and a sequence of trust operations, you can be certain that when you access your bank web site, you are talking to your bank and not a man in the middle. The IETF did not want to make use of the Certificate Authority mechanism, apparently due to its complexity and the cost associated with having to certify each mail server. Instead, they utilized the Domain Name Service (DNS) to do public key distribution. Now, when you register a domain, in addition to the name, you supply a public key. This can then be requested by a receiving mail server if they get mail from that domain. A handy global distribution system, though too tied to IP addressing and layers 3-4 for the authors tastes.</p>
+
+<p>OK, so now we can verify the signer at the receiver. You would expect that the signer is the "From" field in the mail &dash; after all, this is what the person reading the email is going to look at to see if it is someone they know. That is not the case however &dash; and for good reason. Signing is done by the mail server rather than the computer/device of the person writing the email. This is for administrative simplicity. In the DKIM process, they add a header that includes the domain (d=domain) of the signer. That is what is used to get the public key and what is verified. The originator can still fill in any fields they like for the from and reply-to fields. You do know the signer and can make some assumptions about the signer based on their know practices. If it is .gmail.com for example, you know that google authenticates their users so you should be able to trace an bad email back to an account if needed. You might imagine that a reputable email signer would make sure the address fields match the account before sending. This is not always the right thing to do however. Imagine you are sending an email out to your gardening group using your gmail account. The gardening group has their own email server (don't they all?) and so you use your joe@coolgardens.com address when sending. This is a legitimate email and gmail would not want to block it. So, the DKIM process is helpful, but not a complete answer. Note also, that it is domain rather than user centric.</p>
+<p>SPF answers the question "why don't you check to make sure the email server that sends the mail is who it says it is?". Bad actors can use any mail server, let's say mailer@spammer.com and say they are joe@coolmail.com. SPF tells DNS the IP addresses of the legitimate email servers for a domain. So, for example, coolmail.com might have 3 servers with fixed ip addresses. It will add these to coolmail.com's DNS entries. When receiving a mail purporting to be from coolmail.com, the receiver can grab the IP addresses from DNS and compare them to the ones used to send the email. This does not prevent mail from the correct domain &dash; for example, a spammer@yahoo account can be used to send out as if from Joe@yahoo.com and the IP addresses would match. Another added complexity is the fact that SPF deals with the "envelope" address or the RFC5321.MailFrom address which is different from the RFC5322.From address, which is the one that you see in an email to determine who sent you the mail.</p>
+
+<p>DMARC provides information to allow better decision making based on DKIM and SPF results. When a receiver gets an email from coolmail.com, it is important to know if coolmail.com is applying DKIM and SPF headers. If they are and the mail arrives without them, then the receiver should be suspicious. Further, the receive would like to know what the sender's suggested policy wrt DKIM and SPF are. The sender may want a receiver to drop any messages that fail DKIM, or just mark them as spam. DMARK provides the protocol for the distribution of this policy as well as the distribution of reporting information. A sender may be quite interested to find that there are many messages arriving at a destination purported to be from the sender that are failing DKIM.</p>
+
+<p>In general, the SPF, DKIM and DMARC provide more information, but do not cover all scenarios. Mailing lists are specifically challenging. To accommodate this, spam filters will often allow messages rather than fail them to ensure mail works for its uses.</p>
+
+<p>By specifically calling out an individual email address, BlackListMe avoids these issues by providing an unambiguous result for that address.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+$(document).ready(function() {
+  $(".faqQ").click(function() {
+    $(this).next(".faqA").toggle();
+  });
+});
+</script>
+{{end}}

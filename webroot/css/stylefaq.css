@@ -1,0 +1,51 @@
+/* stylefaq.css
+ */
+.faqList {
+ padding-bottom: 50px;
+ display: block;
+ text-shadow: none;
+}
+.faqEntry {
+ padding: 10px 0;
+ border-bottom: 3px solid #d6d6d6;
+}
+
+a.faqQ {
+ padding: 5px 35px 0 30px;
+ min-height: 30px;
+ font-weight: normal;
+ font-size: 1em;
+ text-decoration: none;
+ color: #3b9712;
+ cursor: pointer;
+ position: relative;
+}
+a.faqQ:hover {
+ text-decoration: underline;
+}
+a.faqQ:before {
+ content: 'Q';
+ font-size: 1.7em;
+ font-weight: normal;
+ color: #3b9712;
+ line-height: 30px;
+ position: absolute;
+ left: 0;
+ top: 0;
+}
+
+.faqA {
+ display: none;
+ padding: 0 0 0 30px;
+ min-height: 30px;
+ position:relative;
+}
+.faqA p {
+ font-size: .9em;
+ font-weight: normal;
+}
+.faqA ol {
+ padding: 0 0 0 30px;
+ font-size: .9em;
+ font-weight: normal;
+}
