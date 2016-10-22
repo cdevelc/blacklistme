@@ -48,13 +48,20 @@ a {
 #header .banner a {
  color: #6d6e70;
 }
+#header .banner img {
+ margin: 0;
+ padding: 70px 0 0 0;
+ width: auto;
+ height: 130px;
+ float: left;
+}
 #header .banner .nav {
  margin: 0;
  padding: 70px 70px 0 0;
  float: right;
 }
 #header .banner .logo {
- padding: 60px 0 0 70px;
+ padding: 60px 0 0 10px;
  float: left;
  font-size: 3.6em;
  font-weight: bold;
