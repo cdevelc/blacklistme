@@ -18,6 +18,7 @@ func verify_user_create_session_and_redirect(q *q29.ReqRsp, uname string, pword 
 		encpw := session.EncryptPassword(pword, u.Passsalt)
 		if encpw == u.Password {
 			session.Create(q.M, q.W, q.Base, u.Username, u.Email)
+			user.StampLogin(q.M, u)
 			q29.Redirect(q, uri)
 			return false
 		}
