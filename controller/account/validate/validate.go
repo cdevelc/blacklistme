@@ -135,26 +135,10 @@ func ChangePassword(q *q29.ReqRsp, av *AccessVars) {
 	voldpassword(av)
 }
 
-func Update(q *q29.ReqRsp, av *AccessVars) {
+func ChangeEmail(q *q29.ReqRsp, av *AccessVars) {
 	initAVs(q, av)
-	vusername(av)
+	vpassword(av)	
 	vemail(av)
-	vpassword(av)
-	vpassagain(av)
-	if av.Error.Count == 0 {
-		u := user.FindByUname(q.M, av.Username)
-		if u != nil && u.Username != q.U.Username {
-			av.Error.Username = "Username is not available"
-			av.ErrorLabel.Username = "in use"						
-			av.Error.Count++
-		}
-		u = user.FindByEmail(q.M, av.Email)
-		if u != nil && u.Email != q.U.Email {
-			av.Error.Email = "Email address already has account"
-			av.ErrorLabel.Email = "in use"						
-			av.Error.Count++
-		}
-	}
 }
 
 func Login(q *q29.ReqRsp, av *AccessVars) {

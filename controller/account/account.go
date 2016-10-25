@@ -147,6 +147,41 @@ func Password(q *q29.ReqRsp) {
 	q29.Render(q, &templateVars)		
 }
 
+func Email(q *q29.ReqRsp) {
+	var templateVars TemplateVars
+	var u *user.User
+	var oldEmail string
+
+	if q.R.Method == "POST" {
+		validate.ChangeEmail(q, &templateVars.Av)
+
+		if templateVars.Av.Error.Count == 0 {
+			u = user.FindByUname(q.M, q.U.Username)
+			if u != nil {
+				encpw := session.EncryptPassword(templateVars.Av.Password, u.Passsalt)
+				if encpw == u.Password {
+					oldEmail = u.Email
+					u.Email  = templateVars.Av.Email
+					user.Update(q.M, u)
+					session.Destroy(q.M, q.R, q.W)
+					s := mailgo.Session { Fname: u.Firstname, Lname: u.Lastname, Email: u.Email,}
+					mailgo.NotifyEmailAddressChange(&s, oldEmail)
+					verify_user_create_session_and_redirect(q, q.U.Username, templateVars.Av.Password, "ulist/profile")
+					return
+				}
+				templateVars.Av.Password = ""
+				templateVars.Av.ErrorLabel.Password = "incorrect"			
+				templateVars.Av.Error.Password = "Sorry, that password was incorrect"
+				templateVars.Av.Error.Count++
+			}
+		}
+	}
+	if templateVars.Av.StateToken == "" {
+		templateVars.Av.StateToken = session.AllocateClientStateToken(q.M, q29.RemoteIP(q))
+	}
+	q29.Render(q, &templateVars)		
+}
+
 func Forgot(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View

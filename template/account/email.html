@@ -1,0 +1,35 @@
+{{define "body"}}
+{{$page := .}}
+<script src="{{.Vw.Base}}js/accvallib.js"></script>
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}account">My Account</a>&nbsp;&nbsp;&#8594;&nbsp;<strong>Change Email Address</strong></p>
+</nav>
+<div class="gridwrap">
+  <div class="acct">
+    <h3>Change Your Email</h3>
+    <form name="cemail" action="{{.Vw.Base}}account/email" method="POST" onsubmit="return validateForm('cemail')">
+    <input type="hidden" name="stateToken" value="{{.Av.StateToken}}">
+    <ul>
+      <li>You may update your email address at any time.  We will send notification messages to both the old and new address.</li>
+      <li style="background: #f2f2f2">
+        <label>Current Email Address</label>
+        <input name="oldemail" type="text" value="{{.Vw.Useremail}}" readonly>
+      </li>
+      <li>
+        <label>New Email Address</label>
+        <input name="email" type="text" maxlength="60" placeholder="New Email Address" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Av.Email}}">
+        <span id="email.errlabel" class="errlabel">{{.Av.ErrorLabel.Email}}</span>
+      </li>
+      <li class="fielderror" id="email.error">{{.Av.Error.Email}}</li>
+      <li>
+        <label>Password</label>
+        <input name="password" type="password" placeholder="Password" autocomplete="off">
+        <span id="password.errlabel" class="errlabel">{{.Av.ErrorLabel.Password}}</span>
+      </li>
+      <li class="fielderror" id="password.error">{{.Av.Error.Password}}</li>      
+      <li class="center"><button type="submit">Save Changes</button><a class="cancel" href="{{.Vw.Base}}ulist/profile">Cancel</a></li>
+    </ul>
+    </form>
+  </div>
+</div>
+{{end}}
