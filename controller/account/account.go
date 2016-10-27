@@ -183,6 +183,36 @@ func Email(q *q29.ReqRsp) {
 	q29.Render(q, &templateVars)		
 }
 
+func Rename(q *q29.ReqRsp) {
+	var templateVars TemplateVars
+	var u *user.User
+
+	if q.R.Method == "POST" {
+		validate.ChangeName(q, &templateVars.Av)
+		if templateVars.Av.Error.Count == 0 {
+			u = user.FindByUname(q.M, q.U.Username)
+			if u != nil {
+				encpw := session.EncryptPassword(templateVars.Av.Password, u.Passsalt)
+				if encpw == u.Password {
+					u.Firstname = templateVars.Av.Firstname
+					u.Lastname  = templateVars.Av.Lastname
+					user.Update(q.M, u)
+					q29.Redirect(q, "ulist/profile")
+					return
+				}
+				templateVars.Av.Password = ""
+				templateVars.Av.ErrorLabel.Password = "incorrect"			
+				templateVars.Av.Error.Password = "Sorry, that password was incorrect"
+				templateVars.Av.Error.Count++
+			}
+		}
+	}
+	if templateVars.Av.StateToken == "" {
+		templateVars.Av.StateToken = session.AllocateClientStateToken(q.M, q29.RemoteIP(q))
+	}
+	q29.Render(q, &templateVars)		
+}
+
 func Forgot(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View

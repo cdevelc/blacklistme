@@ -49,6 +49,7 @@ func Dispatch(q *q29.ReqRsp) {
 		case "forgot":         account.Forgot(q)
 		case "password":       account.Password(q)
 		case "email":          account.Email(q)
+		case "rename":         account.Rename(q)			
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

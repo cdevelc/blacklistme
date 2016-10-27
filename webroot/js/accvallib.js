@@ -19,7 +19,8 @@ function erroSet(k, s, l) {
 var formfields = {
  register:  ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
  cpassword: ['password', 'passagain', 'oldpassword'],
- update:    ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
+ cemail:    ['email', 'password'],
+ cname:     ['firstname', 'lastname', 'password'],
  login:     ['username', 'password']
 };
 
