@@ -1,0 +1,32 @@
+{{define "body"}}
+{{$page := .}}
+<div id="ulist">
+  {{template "umenu" .}}
+  <div id="ucontent">
+    <div class="utable">
+      <div class="row"><h1>My API Key</h1></div>
+      <div class="row"><hr class="hrg"></div>      
+      <div class="row">
+        <div class="cell" style="width: 20%"><img src="{{.Vw.Base}}img/groundh2.png" style="height:auto; width: 90%"></div>
+        <div class="cell" style="width: 80%">
+          <div class="row">
+            <div class="cell w1"><strong>Key Value</strong></div>
+            <div class="cell w2">{{.Apikey}}</div>
+            <div class="cell w3">&nbsp;</div>            
+          </div>
+          <div class="row">
+            <div class="cell w1"><strong>Date Generated</strong></div>
+            <div class="cell w2">{{.Created}}</div>
+            <div class="cell w3"><a href="{{.Vw.Base}}ulist/apikeyregen" class="btn">Regenerate</a></div>            
+          </div>
+          <div class="row"><hr class="hrg"></div>
+          <div class="row">
+            <p>Your API Key Value is a required argument if you query our REST API to test whether an email address has been blacklisted.  It uniquely identifies your requests to our server.  You may regenerate this key at any time, however the old value will no longer be valid after regeneration and your query client must be updated with the new value.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row"><hr></div>
+    </div>
+  </div>
+</div>  
+{{end}}

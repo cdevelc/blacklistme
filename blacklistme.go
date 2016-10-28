@@ -33,7 +33,9 @@ func Dispatch(q *q29.ReqRsp) {
 		switch (q.Action) {
 		case "index":          ulist.Dashboard(q)
 		case "dashboard":      ulist.Dashboard(q)
-		case "profile":        ulist.Profile(q)			
+		case "profile":        ulist.Profile(q)
+		case "apikey":         ulist.Apikey(q)
+		case "apikeyregen":    ulist.ApikeyRegen(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

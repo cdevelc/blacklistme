@@ -103,10 +103,9 @@
   <ul>
     <li {{if eq .Vw.Action "dashboard"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/dashboard">Dashboard</a></li>
     <li {{if eq .Vw.Action "profile"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/profile">Profile</a></li>
-    <li><a href="#">API Key</a></li>    
-    <li><a href="#">Email Blacklist</a></li>
-    <li><a href="#">Personal List</a></li>      
-    <li><a href="#">Domain Lists</a></li>
+    <li {{if eq .Vw.Action "apikey"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/apikey">API Key</a></li>
+    <li><a href="#">Domain Lists</a></li>    
+    <li><a href="#">Private List</a></li>
   </ul>
 </div>
 {{end}}

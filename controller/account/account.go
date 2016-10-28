@@ -4,6 +4,7 @@ import "q29"
 import "q29/session"
 import "q29/user"
 import "blacklistme/controller/account/validate"
+import "blacklistme/model/apikey"
 import "github.com/mailgo"
 
 type TemplateVars struct {
@@ -104,11 +105,14 @@ func Confirm(q *q29.ReqRsp) {
 		Vw q29.View
 	}
 	var u *user.User
+	var a apikey.Apikey
 	
 	u = user.FindByPasssalt(q.M, q.R.URL.Query().Get("vps"))
 	if u != nil {
 		u.Confirmed = true
 		user.Update(q.M, u)
+		a.UserId = u.Id
+		apikey.Upsert(q.M, &a)
 	}
 	q29.Render(q, &page)			
 }
