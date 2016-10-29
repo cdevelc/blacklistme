@@ -8,7 +8,7 @@
 </nav>
 <div class="gridwrap">
   <div class="acct">
-    <h3>Login In to Your Account<span class="right"><a href="{{.Vw.Base}}account/register">Sign Up?</a></span></h3>
+    <h3>Login to Your Account<span class="right"><a href="{{.Vw.Base}}account/register">Sign Up?</a></span></h3>
     <form name="login" action="{{.Vw.Base}}account/login" method="POST" onsubmit="return validateForm('login');">
     <input type="hidden" name="stateToken" value="{{.Av.StateToken}}">                      
     <ul>

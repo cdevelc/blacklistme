@@ -76,15 +76,26 @@
           <div class="ddpanel">
             <ul>
               <li><a href="#">Email Blacklist</a></li>
-              <li><a href="#">Personal Blacklist</a></li>
-              <li><a href="#">Domain Blacklist</a></li>
+              <li><a href="#">Domain Blacklist</a></li>              
+              <li><a href="#">Private Blacklist</a></li>
               <li><a href="#">API</a></li>
             </ul>
           </div>
         </div>        
       </li>
       <li><a href="#" >Apps<span class="ddown">+</span></a></li>
-      <li><a href="#" >Account<span class="ddown">+</span></a></li>
+      <li><a href="#" >Account<span class="ddown">+</span></a>
+        <div class="ddwrap">
+          <div class="ddpanel lower">
+            <ul>
+              <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/dashboard"{{else}}"{{.Vw.Base}}account/login"{{end}}>Dashboard</a></li>
+              <li><a href={{if .Vw.User}}"#"{{else}}"{{.Vw.Base}}account/login"{{end}}>Domain Blackists</a></li>              
+              <li><a href={{if .Vw.User}}"#"{{else}}"{{.Vw.Base}}account/login"{{end}}>Private Blacklist</a></li>
+              <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/profile"{{else}}"{{.Vw.Base}}account/login"{{end}}>Profile</a></li>
+            </ul>
+          </div>
+        </div>        
+      </li>
       <li><a href="{{.Vw.Base}}blist/dump" >Dump</a></li>      
     </ul>
   </div>           

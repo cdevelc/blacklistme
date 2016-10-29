@@ -13,10 +13,16 @@ func Dashboard(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View
 		LastLoginTime string
+		Apikey string
 	}
 	t, _ := time.Parse("2006-01-02 15:04:05", q.U.LastLoginTime)
 	page.LastLoginTime = fmt.Sprintf(t.Format("January 2, 2006 3:04PM"))
-	page.Vw.Template = "ulist/dashboard"
+
+	var apk apikey.Apikey
+	apikey.FindByUserId(q.M, q.U.Id, &apk)
+	page.Apikey = apk.APIkey
+	
+	page.Vw.Template = "ulist/dashboard"	
 	q29.Render(q, &page)
 }
 

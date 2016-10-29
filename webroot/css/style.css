@@ -195,6 +195,10 @@ a {
  white-space: nowrap;
  color: #fff;
 }
+#header .lower li a {
+ text-transform: none;
+ letter-spacing: normal;
+}
 #header .ddpanel li:hover, #header .ddpanel li:focus {
  background: #3b9712;                                 
 }
