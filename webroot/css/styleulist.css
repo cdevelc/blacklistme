@@ -117,3 +117,8 @@
  background: linear-gradient(to bottom, #d3d5d5 0%, #fafafa 100%);
  text-shadow: none;
 }
+
+input.apikey {
+ padding: .4em;
+ border: 1px solid #d6d6d6;    
+}
