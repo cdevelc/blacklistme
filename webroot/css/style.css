@@ -8,6 +8,7 @@
 a, button {
  outline: 0;
  focus: 0;
+ cursor: pointer;
 }
 body {
  min-width: 300px;

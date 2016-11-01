@@ -1,0 +1,60 @@
+{{define "body"}}
+{{$page := .}}
+<div id="ulist">
+  {{template "umenu" .}}
+  <div id="ucontent">
+    {{if .FlashMsg}}<div id="flash">{{.FlashMsg}}</div>{{end}}
+    <h2>Private Black List</h2>
+    <div style="width: 75%">This is your list of email addresses you don't personally own, but they arrive in your inbox with a spam payload.  When you call our API these addresses will <strong>hit</strong> even if they are not in the main BlackListMe email database.</div>
+    <br>
+    <a class="btn gomodal">Add An Address</a>
+{{if .PlistEmpty}}
+    <div><p>You do not currently have a private email Black List.</p>
+{{else}}
+    <table>
+      <tbody>
+      <tr><th>Address</th><th>Date Added</th></tr>
+      <tr><td></td><td></td></tr>
+      </tbody>
+    </table>
+{{end}}
+  </div>    
+</div>
+<div id="modal">
+  <div class="gridwrap">
+    <div class="acct">
+      <h3>Add An Email Address to your Private Black List</h3>
+      <form name="addemail" action="{{.Vw.Base}}ulist/plistadd" method="POST" onsubmit="return validateForm('addemail')">
+        <ul>
+          <li>You may add an email address to this list at any time.  When you query our API for a potentially blacklisted address, the addresses in this list will also return positive blacklist hits</li>
+          <li>
+            <label>Email</label>
+            <input name="email" type="text" maxlength="60" placeholder="Email Address" autocomplete="off" autocapitalize="off" autocorrect="off">
+            <span id="email.errlabel" class="errlabel"></span>
+          </li>
+          <li class="fielderror" id="email.error"></li>
+          <li class="center"><button type="submit">Add Address</button><a class="cancel unmodal">Cancel</a></li>
+        </ul>
+      </form>
+    </div>
+  </div>    
+</div>
+<script>
+$(document).ready(function() {
+$(".gomodal").click(function(ev) {
+  ev.preventDefault();
+  document.getElementById("modal").style.display = "block";
+});
+$(".unmodal").click(function(ev) {
+  ev.preventDefault();
+  document.getElementById("modal").style.display = "none";
+});
+var el = document.getElementById("flash");
+if (el != undefined) {
+  el.style.opacity = 0;
+  el.style.height = 0;
+  el.style.padding = 0;
+}
+});
+</script>
+{{end}}

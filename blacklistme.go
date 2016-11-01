@@ -36,6 +36,9 @@ func Dispatch(q *q29.ReqRsp) {
 		case "profile":        ulist.Profile(q)
 		case "apikey":         ulist.Apikey(q)
 		case "apikeyregen":    ulist.ApikeyRegen(q)
+		case "plist":          ulist.Plist(q)
+		case "plistadd":       ulist.PlistAdd(q)
+		case "plistdel":       ulist.PlistDel(q)			
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

@@ -62,3 +62,22 @@ func ApikeyRegen(q *q29.ReqRsp) {
 	}
 	q29.Redirect(q, "ulist/apikey")
 }
+
+func Plist(q *q29.ReqRsp) {
+	var page struct {
+		Vw q29.View
+		PlistEmpty bool
+	}
+	page.PlistEmpty = true
+	q29.Render(q, &page)
+}
+
+func PlistAdd(q *q29.ReqRsp) {
+//  email := q.R.URL.Query().Get("email")
+	q29.Redirect(q, "ulist/plist")
+}
+
+func PlistDel(q *q29.ReqRsp) {
+//  email := q.R.URL.Query().Get("email")	
+	q29.Redirect(q, "ulist/plist")
+}

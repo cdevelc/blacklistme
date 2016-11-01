@@ -94,7 +94,7 @@
 .utable .cell .w2 { width: 60%; }
 .utable .cell .w3 { width: 20%; }
 
-.utable a.btn {
+#ucontent a.btn {
  margin0: 0 0 2em 0;
  padding: 0.5em 1.125em;
  text-shadow: 0 -1px 1px #fff;
@@ -108,12 +108,13 @@
  background: linear-gradient(to bottom, #fefefe 0%, #ededed 100%);
  border: 1px solid #b8b8b8;
  border-radius: 5px;
+ cursor: pointer;
 }
-.utable a.btn:hover {
+#ucontent a.btn:hover {
  background: linear-gradient(to bottom, #eff0f0 0%, #cacccb 100%);
  text-shadow: none;
 }
-.utable a.btn:active {
+#ucontent a.btn:active {
  background: linear-gradient(to bottom, #d3d5d5 0%, #fafafa 100%);
  text-shadow: none;
 }
@@ -121,4 +122,31 @@
 input.apikey {
  padding: .4em;
  border: 1px solid #d6d6d6;    
+}
+
+#flash {
+ margin: 0;
+ padding: 1em;
+ height: 3.2em;
+ width: 75%;
+ color: #fff;;
+ background: #3b9712;
+ border: 1px solid #999999;
+ border-radius: 5px;
+ display: block;
+ transition: all 3s ease-out 3s;
+ overflow: hidden;
+}
+
+#modal {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ z-index: 1000;
+ overflow: hidden;
+ outline: none; 
+ background-color: rgba(0,0,0,0.8);
+ display: none;
 }

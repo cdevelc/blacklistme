@@ -2,15 +2,11 @@ package blist
 
 import "net/http"
 import "strings"
-import "regexp"
 import "q29"
 import "q29/user"
+import "q29/validfield"
 import "blacklistme/model/emaddr"
 import "github.com/mailgo"
-
-const regexEmailValue string = "^(((([a-zA-Z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])+(\\.([a-zA-Z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\x5b]|[\\x5d-\\x7e]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(\\x22)))@((([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])([a-zA-Z]|\\d|-|\\.|_|~|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])*([a-zA-Z]|\\d|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])))\\.)+(([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])|(([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])([a-zA-Z]|\\d|-|\\.|_|~|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])*([a-zA-Z]|[\\x{00A0}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFEF}])))\\.?$"
-
-var rxEmail = regexp.MustCompile(regexEmailValue)
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	return true
@@ -32,7 +28,8 @@ func Inquire(q *q29.ReqRsp) {
 		Vw          q29.View
 	}
 	page.Email = q.R.URL.Query().Get("email")
-	if rxEmail.MatchString(page.Email) == false {
+	emsg := validfield.Email(validfield.F{ "Email address", page.Email, 0, 0, true})
+	if emsg != "" {
 		http.Error(q.W, q.R.URL.Path+" invalid email address", 404)
 		return
 	}
@@ -51,7 +48,8 @@ func AddRem(q *q29.ReqRsp) {
 
 	q.R.ParseForm()
 	page.Email = q.R.FormValue("email")
-	if rxEmail.MatchString(page.Email) == false {
+	emsg := validfield.Email(validfield.F{ "Email address", page.Email, 0, 0, true})
+	if emsg != "" {
 		http.Error(q.W, q.R.URL.Path+" invalid email address", 404)
 		return
 	}
