@@ -21,7 +21,8 @@ var formfields = {
  cpassword: ['password', 'passagain', 'oldpassword'],
  cemail:    ['email', 'password'],
  cname:     ['firstname', 'lastname', 'password'],
- login:     ['username', 'password']
+ login:     ['username', 'password'],
+ email:     ['email'] 
 };
 
 function validateForm(fname) {

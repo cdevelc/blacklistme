@@ -24,7 +24,7 @@
   <div class="gridwrap">
     <div class="acct">
       <h3>Add An Email Address to your Private Black List</h3>
-      <form name="addemail" action="{{.Vw.Base}}ulist/plistadd" method="POST" onsubmit="return validateForm('addemail')">
+      <form name="email" action="{{.Vw.Base}}ulist/plistadd" method="POST" onsubmit="return validateForm('email')">
         <ul>
           <li>You may add an email address to this list at any time.  When you query our API for a potentially blacklisted address, the addresses in this list will also return positive blacklist hits</li>
           <li>

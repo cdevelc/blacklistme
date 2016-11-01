@@ -67,6 +67,7 @@ func Plist(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View
 		PlistEmpty bool
+		FlashMsg string
 	}
 	page.PlistEmpty = true
 	q29.Render(q, &page)
