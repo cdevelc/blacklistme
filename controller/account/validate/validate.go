@@ -141,6 +141,11 @@ func ChangeEmail(q *q29.ReqRsp, av *AccessVars) {
 	vemail(av)
 }
 
+func ChangeName(q *q29.ReqRsp, av *AccessVars) {
+	initAVs(q, av)
+	vpassword(av)	
+}
+
 func Login(q *q29.ReqRsp, av *AccessVars) {
 	initAVs(q, av)
 	vusername(av)

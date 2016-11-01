@@ -19,8 +19,10 @@ function erroSet(k, s, l) {
 var formfields = {
  register:  ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
  cpassword: ['password', 'passagain', 'oldpassword'],
- update:    ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
- login:     ['username', 'password']
+ cemail:    ['email', 'password'],
+ cname:     ['firstname', 'lastname', 'password'],
+ login:     ['username', 'password'],
+ email:     ['email'] 
 };
 
 function validateForm(fname) {
@@ -85,12 +87,14 @@ function validate_humanname(k, h, labl) {
 }
 
 function validate_email(k, e) {
- var atpos = e.indexOf("@");
- var dotpos = e.lastIndexOf(".");
  if (!e || e.length == 0)
   erroSet(k, "", "required");
- else if (atpos<1 || dotpos<atpos+2 || dotpos+2>e.length)
-  erroSet(k, "Email address is invalid", "invalid");
+ else if (e.length < 5)
+  erroSet(k, "Email address is too short", "invalid");
+ else if (e.length > 64)
+  erroSet(k, "Email address is too long", "invalid");
+ else if (!e.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/))
+  erroSet(k, "Email address contains invalid characters", "invalid");
 }
     
 function validate_password(k, p) {

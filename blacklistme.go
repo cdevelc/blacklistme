@@ -51,7 +51,12 @@ func Dispatch(q *q29.ReqRsp) {
 		switch (q.Action) {
 		case "index":          ulist.Dashboard(q)
 		case "dashboard":      ulist.Dashboard(q)
-		case "profile":        ulist.Profile(q)			
+		case "profile":        ulist.Profile(q)
+		case "apikey":         ulist.Apikey(q)
+		case "apikeyregen":    ulist.ApikeyRegen(q)
+		case "plist":          ulist.Plist(q)
+		case "plistadd":       ulist.PlistAdd(q)
+		case "plistdel":       ulist.PlistDel(q)			
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
@@ -67,6 +72,7 @@ func Dispatch(q *q29.ReqRsp) {
 		case "forgot":         account.Forgot(q)
 		case "password":       account.Password(q)
 		case "email":          account.Email(q)
+		case "rename":         account.Rename(q)			
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

@@ -17,7 +17,9 @@ function HideErrorMessage()
 }
 function ValidateEmail()
 {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(blacklistForm.email.value)) {
+  erro_count = 0;
+  validate_email('email', blacklistForm.email.value);
+  if (erro_count == 0) {
     return true;
   }
   document.getElementById('errorwrap').style.display = "block";

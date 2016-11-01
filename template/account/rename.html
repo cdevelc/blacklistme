@@ -1,0 +1,37 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}ulist/profile">My Account</a>&nbsp;&nbsp;&#8594;&nbsp;<strong>Change My Name</strong></p>
+</nav>
+<div class="gridwrap">
+  <div class="acct">
+    <h3>Change Your Name</h3>
+    <form name="cname" action="{{.Vw.Base}}account/rename" method="POST" onsubmit="return validateForm('cname')">
+    <input type="hidden" name="stateToken" value="{{.Av.StateToken}}">
+    <ul>
+      <li>Wow, you want to change your name?  Sure, you can do that any time you like.</li>
+      <li>
+        <label>First Name</label>
+        <input name="firstname" type="text" maxlength="32" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Vw.UserFirstname}}">
+        <span id="firstname.errlabel" class="errlabel">{{.Av.ErrorLabel.Firstname}}</span>
+      </li>
+      <li class="fielderror" id="firstname.error">{{.Av.Error.Firstname}}</li>
+      <li>
+        <label>Last Name</label>
+        <input name="lastname" type="text" maxlength="32" autocomplete="off" autocapitalize="off" autocorrect="off" value="{{.Vw.UserLastname}}">
+        <span id="lastname.errlabel" class="errlabel">{{.Av.ErrorLabel.Lastname}}</span>
+      </li>
+      <li class="fielderror" id="lastname.error">{{.Av.Error.Lastname}}</li>
+      <li>
+        <label>Password</label>
+        <input name="password" type="password" placeholder="Password" autocomplete="off">
+        <span id="password.errlabel" class="errlabel">{{.Av.ErrorLabel.Password}}</span>
+      </li>
+      <li class="fielderror" id="password.error">{{.Av.Error.Password}}</li>      
+
+      <li class="center"><button type="submit">Save Changes</button><a class="cancel" href="{{.Vw.Base}}ulist/profile">Cancel</a></li>
+    </ul>
+    </form>
+  </div>
+</div>
+{{end}}

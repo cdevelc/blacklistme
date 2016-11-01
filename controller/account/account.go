@@ -4,6 +4,7 @@ import "q29"
 import "q29/session"
 import "q29/user"
 import "blacklistme/controller/account/validate"
+import "blacklistme/model/apikey"
 import "github.com/mailgo"
 
 type TemplateVars struct {
@@ -104,11 +105,14 @@ func Confirm(q *q29.ReqRsp) {
 		Vw q29.View
 	}
 	var u *user.User
+	var a apikey.Apikey
 	
 	u = user.FindByPasssalt(q.M, q.R.URL.Query().Get("vps"))
 	if u != nil {
 		u.Confirmed = true
 		user.Update(q.M, u)
+		a.UserId = u.Id
+		apikey.Upsert(q.M, &a)
 	}
 	q29.Render(q, &page)			
 }
@@ -168,6 +172,36 @@ func Email(q *q29.ReqRsp) {
 					s := mailgo.Session { Fname: u.Firstname, Lname: u.Lastname, Email: u.Email,}
 					mailgo.NotifyEmailAddressChange(&s, oldEmail)
 					verify_user_create_session_and_redirect(q, q.U.Username, templateVars.Av.Password, "ulist/profile")
+					return
+				}
+				templateVars.Av.Password = ""
+				templateVars.Av.ErrorLabel.Password = "incorrect"			
+				templateVars.Av.Error.Password = "Sorry, that password was incorrect"
+				templateVars.Av.Error.Count++
+			}
+		}
+	}
+	if templateVars.Av.StateToken == "" {
+		templateVars.Av.StateToken = session.AllocateClientStateToken(q.M, q29.RemoteIP(q))
+	}
+	q29.Render(q, &templateVars)		
+}
+
+func Rename(q *q29.ReqRsp) {
+	var templateVars TemplateVars
+	var u *user.User
+
+	if q.R.Method == "POST" {
+		validate.ChangeName(q, &templateVars.Av)
+		if templateVars.Av.Error.Count == 0 {
+			u = user.FindByUname(q.M, q.U.Username)
+			if u != nil {
+				encpw := session.EncryptPassword(templateVars.Av.Password, u.Passsalt)
+				if encpw == u.Password {
+					u.Firstname = templateVars.Av.Firstname
+					u.Lastname  = templateVars.Av.Lastname
+					user.Update(q.M, u)
+					q29.Redirect(q, "ulist/profile")
 					return
 				}
 				templateVars.Av.Password = ""

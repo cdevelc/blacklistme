@@ -8,6 +8,7 @@
 a, button {
  outline: 0;
  focus: 0;
+ cursor: pointer;
 }
 body {
  min-width: 300px;
@@ -194,6 +195,10 @@ a {
  text-transform: uppercase;
  white-space: nowrap;
  color: #fff;
+}
+#header .lower li a {
+ text-transform: none;
+ letter-spacing: normal;
 }
 #header .ddpanel li:hover, #header .ddpanel li:focus {
  background: #3b9712;                                 

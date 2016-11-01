@@ -1,17 +1,39 @@
 {{define "body"}}
 {{$page := .}}
 <div id="ulist">
-  <div id="umenu">
-    <ul>
-      <li class="active"><a href="{{.Vw.Base}}ulist/dashboard">Dashboard</a></li>
-      <li><a href="{{.Vw.Base}}ulist/profile">Profile</a></li>
-      <li><a href="#">Email Blacklist</a></li>
-      <li><a href="#">Personal List</a></li>      
-      <li><a href="#">Domain Lists</a></li>      
-  </div>
+  {{template "umenu" .}}
   <div id="ucontent">
-    <h1>Hello&nbsp;{{.Vw.UserFirstname}}&nbsp;{{.Vw.UserLastname}}</h1>
-    <h3>Last logged in on {{.LastLoginTime}}</h3>
+    <div class="utable">    
+      <div class="row">
+        <h1>Hello&nbsp;{{.Vw.UserFirstname}}&nbsp;{{.Vw.UserLastname}}</h1>
+        <h3>Last logged in on {{.LastLoginTime}}</h3>
+      </div>
+      <div class="row"><hr class="hrg"></div>
+      <div class="row">
+        <div class="cell" style="width: 20%"><img src="{{.Vw.Base}}img/dashicon.png" style="height:auto;width:90%;"></div>
+        <div class="cell" style="width: 80%">
+          <div class="row">
+            <div class="cell w1"><strong>API Key</strong></div>
+            <div class="cell w2"><input class="apikey" type="text" size="68" readonly value="{{.Apikey}}"></div>
+            <div class="cell w3"></div>
+          </div>
+          <div class="row"><hr class="hrg"></div>          
+          <div class="row">
+            <div class="cell w1"><strong>Domain Lists</strong></div>
+            <div class="cell w2">none</div>
+            <div class="cell w3"></div>            
+          </div>
+          <div class="row"><hr class="hrg"></div>                    
+          <div class="row">
+            <div class="cell w1"><strong>Private List</strong></div>
+            <div class="cell w2">none</div>
+            <div class="cell w3"></div>
+          </div>
+          <div class="row">&nbsp;</div>
+        </div>
+      </div>
+      <div class="row"><hr></div>      
+    </div>
   </div>    
 </div>
 {{end}}

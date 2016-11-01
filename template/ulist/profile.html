@@ -1,14 +1,7 @@
 {{define "body"}}
 {{$page := .}}
 <div id="ulist">
-  <div id="umenu">
-    <ul>
-      <li><a href="{{.Vw.Base}}ulist/dashboard">Dashboard</a></li>
-      <li class="active"><a href="{{.Vw.Base}}ulist/profile">Profile</a></li>
-      <li><a href="#">Email Blacklist</a></li>
-      <li><a href="#">Personal List</a></li>      
-      <li><a href="#">Domain Lists</a></li>      
-  </div>
+  {{template "umenu" .}}
   <div id="ucontent">
     <div class="utable">    
       <div class="row"><h1>Personal Info</h1></div>
@@ -19,7 +12,7 @@
           <div class="row">
             <div class="cell w1"><strong>Name</strong></div>
             <div class="cell w2">{{.Vw.UserFirstname}}&nbsp{{.Vw.UserLastname}}</div>
-            <div class="cell w3"><a href="#" class="btn">Modify</a></div>
+            <div class="cell w3"><a href="{{.Vw.Base}}account/rename" class="btn">Modify</a></div>
           </div>
           <div class="row"><hr class="hrg"></div>          
           <div class="row">
