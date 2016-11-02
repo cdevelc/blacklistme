@@ -7,10 +7,28 @@ import "blacklistme/controller/ulist"
 import "blacklistme/controller/account"
 import "blacklistme/controller/support"
 import "blacklistme/controller/api"
+import "os"
+import "fmt"
+import	"github.com/golang/glog"
+import "flag"
 
 func Init() {
-	q29.AddSite("blacklistme","blacklistme", "localhost:27017/blacklistme", Dispatch)
+	//q29.AddSite("blacklistme","blacklistme", "localhost:27017/blacklistme", Dispatch)
+
 }
+func init() {
+	glog.Info("Gratuitious message to allow me to import the glog pkg first \n");
+	glog.Flush()
+	flag.Usage = usage
+	flag.Parse()
+}
+
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage: example -stderrthreshold=[INFO|WARN|FATAL] -log_dir=[string]\n", )
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
 
 func Dispatch(q *q29.ReqRsp) {
 
