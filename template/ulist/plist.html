@@ -9,12 +9,13 @@
     <br>
     <a class="btn gomodal">Add An Address</a>
 {{if .PlistCount}}
+    <div style="padding-top: 20px;">
     <table>
-      <tbody>
-        <tr><th>Address</th><th>Date Added</th><th></th></tr>
-{{with .Plist}}{{range .}}<tr><td>{{.Email}}</td><td>{{.Created}}</td><td>x</td></tr>{{end}}{{end}}
-      </tbody>
+      <tr><th>Address</th><th>Date Added</th><th></th></tr>
+{{with .Plist}}{{range .}}
+      <tr><td style="min-width: 12em;">{{.Email}}</td><td style="float: right">{{Date2MDYr .Created}}</td><td>x</td></tr>{{end}}{{end}}
     </table>
+    </div>
 {{else}}
     <div><p>You do not currently have a private email Black List.</p>    
 {{end}}
