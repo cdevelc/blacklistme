@@ -3,7 +3,9 @@ package ulist
 import "fmt"
 import "time"
 import "q29"
+import "q29/validfield"
 import "blacklistme/model/apikey"
+import "blacklistme/model/emaddr"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	return true
@@ -66,19 +68,38 @@ func ApikeyRegen(q *q29.ReqRsp) {
 func Plist(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View
-		PlistEmpty bool
+		Plist []emaddr.Emaddr
+		PlistCount int
 		FlashMsg string
 	}
-	page.PlistEmpty = true
+	emaddr.ListByUid(q.M, "blacklistprivate", q.U.Id, &page.Plist)
+	page.PlistCount = len(page.Plist)
 	q29.Render(q, &page)
 }
 
 func PlistAdd(q *q29.ReqRsp) {
-//  email := q.R.URL.Query().Get("email")
+	var emAddr emaddr.Emaddr
+	q.R.ParseForm()
+  email := q.R.FormValue("email")
+	emsg := validfield.Email(validfield.F{"Email address", email, 0, 0, true})
+	if emsg != "" {
+		q29.SetFlash(q, "That email address was invalid.")
+	} else {
+		found := emaddr.FindByUid(q.M, "blacklistprivate", q.U.Id, email, &emAddr)
+		if found == false {
+			emAddr.Id = ""
+			emAddr.Email = email
+			emAddr.UserId = q.U.Id
+			emaddr.Upsert(q.M, "blacklistprivate", &emAddr)
+		}
+		q29.SetFlash(q, "The email address "+email+" has been added to your Private blacklist.")
+	}
 	q29.Redirect(q, "ulist/plist")
 }
 
 func PlistDel(q *q29.ReqRsp) {
-//  email := q.R.URL.Query().Get("email")	
+	q.R.ParseForm()
+  email := q.R.FormValue("email")
+	q29.SetFlash(q, "The email address "+email+" has been removed from your Private blacklist.")	
 	q29.Redirect(q, "ulist/plist")
 }

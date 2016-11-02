@@ -20,6 +20,10 @@ func List(m *mgo.Session, collection string, em *[]Emaddr) {
 	m.DB("").C(collection).Find(nil).Sort("email").All(em)
 }
 
+func ListByUid(m *mgo.Session, collection string, uid bson.ObjectId, em *[]Emaddr) {
+	m.DB("").C(collection).Find(bson.M{"userid": uid}).Sort("email").All(em)
+}
+
 func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
   var selector bson.M 
 
@@ -59,6 +63,15 @@ func Find(m *mgo.Session, collection string, e string, em *Emaddr) bool {
 
 func FindBySig(m *mgo.Session, collection string, sig string, em *Emaddr) bool {
 	err := m.DB("").C(collection).Find(bson.M{"sha256": sig}).One(em)
+	if err == nil { return true }
+	if err.Error() != "not found" {
+		log.Printf("%s Find: %s\n", collection, err)
+	}
+	return false
+}
+
+func FindByUid(m *mgo.Session, collection string, uid bson.ObjectId, emaddr string, em *Emaddr) bool {
+	err := m.DB("").C(collection).Find(bson.M{"userid": uid, "email": emaddr}).One(em)
 	if err == nil { return true }
 	if err.Error() != "not found" {
 		log.Printf("%s Find: %s\n", collection, err)

@@ -3,20 +3,20 @@
 <div id="ulist">
   {{template "umenu" .}}
   <div id="ucontent">
-    {{if .FlashMsg}}<div id="flash">{{.FlashMsg}}</div>{{end}}
+    {{if .Vw.FlashMsg}}<div id="flash">{{.Vw.FlashMsg}}</div>{{end}}
     <h2>Private Black List</h2>
-    <div style="width: 75%">This is your list of email addresses you don't personally own, but they arrive in your inbox with a spam payload.  When you call our API these addresses will <strong>hit</strong> even if they are not in the main BlackListMe email database.</div>
+    <div style="width: 75%">This is your list of spammy email addresses that you want to block.  When you call our API these addresses will match even if they are not in the main BlackListMe email database.</div>
     <br>
     <a class="btn gomodal">Add An Address</a>
-{{if .PlistEmpty}}
-    <div><p>You do not currently have a private email Black List.</p>
-{{else}}
+{{if .PlistCount}}
     <table>
       <tbody>
-      <tr><th>Address</th><th>Date Added</th></tr>
-      <tr><td></td><td></td></tr>
+        <tr><th>Address</th><th>Date Added</th><th></th></tr>
+{{with .Plist}}{{range .}}<tr><td>{{.Email}}</td><td>{{.Created}}</td><td>x</td></tr>{{end}}{{end}}
       </tbody>
     </table>
+{{else}}
+    <div><p>You do not currently have a private email Black List.</p>    
 {{end}}
   </div>    
 </div>
@@ -29,7 +29,7 @@
           <li>You may add an email address to this list at any time.  When you query our API for a potentially blacklisted address, the addresses in this list will also return positive blacklist hits</li>
           <li>
             <label>Email</label>
-            <input name="email" type="text" maxlength="60" placeholder="Email Address" autocomplete="off" autocapitalize="off" autocorrect="off">
+            <input name="email" type="text" maxlength="60" placeholder="Email Address" autocomplete="off" autocapitalize="off" autocorrect="off" autofocus >
             <span id="email.errlabel" class="errlabel"></span>
           </li>
           <li class="fielderror" id="email.error"></li>
