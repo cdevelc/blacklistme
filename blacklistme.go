@@ -13,8 +13,7 @@ import	"github.com/golang/glog"
 import "flag"
 
 func Init() {
-	//q29.AddSite("blacklistme","blacklistme", "localhost:27017/blacklistme", Dispatch)
-
+	q29.AddSite("blacklistme","blacklistme", "localhost:27017/blacklistme", Dispatch)
 }
 func init() {
 	glog.Info("Gratuitious message to allow me to import the glog pkg first \n");
