@@ -7,7 +7,7 @@
     <h2>Private Black List</h2>
     <div style="width: 75%">This is your list of spammy email addresses that you want to block.  When you call our API these addresses will match even if they are not in the main BlackListMe email database.</div>
     <br>
-    <a class="btn gomodal">Add An Address</a>
+    <a class="btn gomodaladd">Add An Address</a>
 {{if .PlistCount}}
     <div style="padding-top: 20px;">
       <table id="emtab" class="emtable">
@@ -19,7 +19,7 @@
 {{end}}
   </div>    
 </div>
-<div id="modal">
+<div id="modaladd" class="modal">
   <div class="gridwrap">
     <div class="acct">
       <h3>Add An Email Address to your Private Black List</h3>
@@ -32,7 +32,21 @@
             <span id="email.errlabel" class="errlabel"></span>
           </li>
           <li class="fielderror" id="email.error"></li>
-          <li class="center"><button type="submit">Add Address</button><a class="cancel unmodal">Cancel</a></li>
+          <li class="center"><button type="submit">Add Address</button><a class="cancel unmodaladd">Cancel</a></li>
+        </ul>
+      </form>
+    </div>
+  </div>    
+</div>
+<div id="modaldel" class="modal">
+  <div class="gridwrap">
+    <div class="acct">
+      <h3>Remove an Email Address from your Private Black List</h3>
+      <form name="emaildel" action="{{.Vw.Base}}ulist/plistdel" method="POST">
+        <ul>
+          <li>You may remove an email address from this list at any time.</li>
+          <li><label>Email</label><input name="email" type="text" readonly ></li>
+          <li class="center"><button type="submit">Remove Address</button><a class="cancel unmodaldel">Cancel</a></li>
         </ul>
       </form>
     </div>
@@ -56,13 +70,17 @@ plistByDate.sort(function(a,b) {
 });
 
 $(document).ready(function() {
-   $(".gomodal").click(function(ev) {
+   $(".gomodaladd").click(function(ev) {
      ev.preventDefault();
-     document.getElementById("modal").style.display = "block";
+     document.getElementById("modaladd").style.display = "block";
    });
-   $(".unmodal").click(function(ev) {
+   $(".unmodaladd").click(function(ev) {
      ev.preventDefault();
-     document.getElementById("modal").style.display = "none";
+     document.getElementById("modaladd").style.display = "none";
+   });
+   $(".unmodaldel").click(function(ev) {
+     ev.preventDefault();
+     document.getElementById("modaldel").style.display = "none";
    });
    var el = document.getElementById("flash");
    if (el != undefined) {
@@ -76,6 +94,10 @@ $(document).ready(function() {
      var row = tb.insertRow(i+1);
      row.insertCell(0).innerHTML = plistByEmail[i].em;
      row.insertCell(1).innerHTML = plistByEmail[i].dt;
+     row.onclick = function() {
+       document.forms["emaildel"].email.value = this.cells[0].innerHTML;
+       document.getElementById("modaldel").style.display = "block";
+     };
    }
 /***
    for (var i=0; i<plist_len; i++) {
