@@ -150,3 +150,29 @@ input.apikey {
  background-color: rgba(0,0,0,0.8);
  display: none;
 }
+
+.emtable tr {
+ margin: 0;
+ padding: 0;
+ border: 0;
+}    
+.emtable tr:nth-child(even) {
+ background-color: #f2f2f2;
+}
+.emtable tr:hover {
+ background-color: #3b9712;
+ color: #fff;
+}
+.emtable tr.head:hover {
+ background-color: #fff;    
+}
+.emtable td {
+ margin: 0;
+ border: 0;    
+ padding: .5em;
+}
+table.emtable {
+ border: 1px solid #d6d6d6;
+ border-radius: 5px;
+ border-collapse: collapse;
+}

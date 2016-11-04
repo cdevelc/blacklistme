@@ -10,11 +10,9 @@
     <a class="btn gomodal">Add An Address</a>
 {{if .PlistCount}}
     <div style="padding-top: 20px;">
-    <table>
-      <tr><th>Address</th><th>Date Added</th><th></th></tr>
-{{with .Plist}}{{range .}}
-      <tr><td style="min-width: 12em;">{{.Email}}</td><td style="float: right">{{Date2MDYr .Created}}</td><td>x</td></tr>{{end}}{{end}}
-    </table>
+      <table id="emtab" class="emtable">
+        <tr class="head"><td><a class="btn" >Email Address&nbsp;&nbsp;<span>&darr;</span></a></td><td><a class="btn">Date Added&nbsp;&nbsp;<span>&nbsp;</span></a></td></tr>
+      </table>
     </div>
 {{else}}
     <div><p>You do not currently have a private email Black List.</p>    
@@ -41,21 +39,51 @@
   </div>    
 </div>
 <script>
+var plist = [
+{{with .Plist}}{{range .}}{ em: "{{.Email}}", dt: "{{.Created}}" },
+{{end}}{{end}}
+];
+var plist_len = {{.PlistCount}};
+plistByEmail = plist.slice(0);
+plistByEmail.sort(function(a,b) {
+  var x = a.em;
+  var y = b.em;
+  return (x<y)? -1: (x>y)? 1 : 0;
+});
+plistByDate = plist.slice(0);
+plistByDate.sort(function(a,b) {
+   return a.dt - b.dt;
+});
+
 $(document).ready(function() {
-$(".gomodal").click(function(ev) {
-  ev.preventDefault();
-  document.getElementById("modal").style.display = "block";
-});
-$(".unmodal").click(function(ev) {
-  ev.preventDefault();
-  document.getElementById("modal").style.display = "none";
-});
-var el = document.getElementById("flash");
-if (el != undefined) {
-  el.style.opacity = 0;
-  el.style.height = 0;
-  el.style.padding = 0;
-}
+   $(".gomodal").click(function(ev) {
+     ev.preventDefault();
+     document.getElementById("modal").style.display = "block";
+   });
+   $(".unmodal").click(function(ev) {
+     ev.preventDefault();
+     document.getElementById("modal").style.display = "none";
+   });
+   var el = document.getElementById("flash");
+   if (el != undefined) {
+     el.style.opacity = 0;
+     el.style.height = 0;
+     el.style.padding = 0;
+   }
+   
+   var tb = document.getElementById("emtab");
+   for (var i=0; i<plist_len; i++) {
+     var row = tb.insertRow(i+1);
+     row.insertCell(0).innerHTML = plistByEmail[i].em;
+     row.insertCell(1).innerHTML = plistByEmail[i].dt;
+   }
+/***
+   for (var i=0; i<plist_len; i++) {
+     var row = tb.insertRow(i+9);
+     row.insertCell(0).innerHTML = plistByDate[i].em;
+     row.insertCell(1).innerHTML = plistByDate[i].dt;
+   }
+***/
 });
 </script>
 {{end}}

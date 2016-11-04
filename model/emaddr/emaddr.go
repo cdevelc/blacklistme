@@ -21,7 +21,7 @@ func List(m *mgo.Session, collection string, em *[]Emaddr) {
 }
 
 func ListByUid(m *mgo.Session, collection string, uid bson.ObjectId, em *[]Emaddr) {
-	m.DB("").C(collection).Find(bson.M{"userid": uid}).Sort("email").All(em)
+	m.DB("").C(collection).Find(bson.M{"userid": uid}).All(em)
 }
 
 func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
