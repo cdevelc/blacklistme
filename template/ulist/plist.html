@@ -9,9 +9,9 @@
     <br>
     <a class="btn gomodaladd">Add An Address</a>
 {{if .PlistCount}}
-    <div style="padding-top: 20px;">
+    <div style="padding-top: 24px;">
       <table id="emtab" class="emtable">
-        <tr class="head"><td><a class="btn" >Email Address&nbsp;&nbsp;<span>&darr;</span></a></td><td><a class="btn">Date Added&nbsp;&nbsp;<span>&nbsp;</span></a></td></tr>
+        <tr class="head"><td><a class="btn embtn" >Email Address&nbsp;&nbsp;<span id="c1"></span></a></td><td><a class="btn dtbtn">Date Added&nbsp;&nbsp;<span id="c2"></span></a></td></tr>
       </table>
     </div>
 {{else}}
@@ -52,60 +52,33 @@
     </div>
   </div>    
 </div>
-<script>
-var plist = [
-{{with .Plist}}{{range .}}{ em: "{{.Email}}", dt: "{{.Created}}" },
-{{end}}{{end}}
-];
-var plist_len = {{.PlistCount}};
-plistByEmail = plist.slice(0);
-plistByEmail.sort(function(a,b) {
+
+<script src="{{.Vw.Base}}js/emtable.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var plist = [
+  {{with .Plist}}{{range .}}{ em: "{{.Email}}", dt: "{{.Created}}" },
+  {{end}}{{end}}
+  ];
+  var plist_len = {{.PlistCount}};
+  var plistByEmail = plist.slice(0);
+  plistByEmail.sort(function(a,b) {
   var x = a.em;
   var y = b.em;
   return (x<y)? -1: (x>y)? 1 : 0;
-});
-plistByDate = plist.slice(0);
-plistByDate.sort(function(a,b) {
-   return a.dt - b.dt;
-});
-
+  });
+  var plistByDate = plist.slice(0);
+  plistByDate.sort(function(a,b) {
+  return a.dt - b.dt;
+  });
+  
 $(document).ready(function() {
-   $(".gomodaladd").click(function(ev) {
-     ev.preventDefault();
-     document.getElementById("modaladd").style.display = "block";
-   });
-   $(".unmodaladd").click(function(ev) {
-     ev.preventDefault();
-     document.getElementById("modaladd").style.display = "none";
-   });
-   $(".unmodaldel").click(function(ev) {
-     ev.preventDefault();
-     document.getElementById("modaldel").style.display = "none";
-   });
    var el = document.getElementById("flash");
    if (el != undefined) {
      el.style.opacity = 0;
      el.style.height = 0;
      el.style.padding = 0;
-   }
-   
-   var tb = document.getElementById("emtab");
-   for (var i=0; i<plist_len; i++) {
-     var row = tb.insertRow(i+1);
-     row.insertCell(0).innerHTML = plistByEmail[i].em;
-     row.insertCell(1).innerHTML = plistByEmail[i].dt;
-     row.onclick = function() {
-       document.forms["emaildel"].email.value = this.cells[0].innerHTML;
-       document.getElementById("modaldel").style.display = "block";
-     };
-   }
-/***
-   for (var i=0; i<plist_len; i++) {
-     var row = tb.insertRow(i+9);
-     row.insertCell(0).innerHTML = plistByDate[i].em;
-     row.insertCell(1).innerHTML = plistByDate[i].dt;
-   }
-***/
+   }   
+   emTableInit();
 });
 </script>
 {{end}}

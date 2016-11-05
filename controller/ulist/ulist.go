@@ -98,8 +98,20 @@ func PlistAdd(q *q29.ReqRsp) {
 }
 
 func PlistDel(q *q29.ReqRsp) {
+	var emAddr emaddr.Emaddr	
 	q.R.ParseForm()
   email := q.R.FormValue("email")
-	q29.SetFlash(q, "The email address "+email+" has been removed from your Private blacklist.")	
+	emsg := validfield.Email(validfield.F{"Email address", email, 0, 0, true})
+	if emsg != "" {
+		q29.SetFlash(q, "That email address was invalid.")		
+	} else {
+		found := emaddr.FindByUid(q.M, "blacklistprivate", q.U.Id, email, &emAddr)
+		if found == false {
+			q29.SetFlash(q, "That email address was not found.");
+		} else {
+			emaddr.Delete(q.M, "blacklistprivate", emAddr.Id)
+			q29.SetFlash(q, "The email address "+email+" has been removed from your Private blacklist.")		
+		}		
+	}
 	q29.Redirect(q, "ulist/plist")
 }
