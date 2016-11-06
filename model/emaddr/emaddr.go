@@ -23,6 +23,10 @@ func List(m *mgo.Session, collection string, em *[]Emaddr) {
 func ListByUid(m *mgo.Session, collection string, uid bson.ObjectId, em *[]Emaddr) {
 	m.DB("").C(collection).Find(bson.M{"userid": uid}).All(em)
 }
+func ListByUidCount(m *mgo.Session, collection string, uid bson.ObjectId) int {
+	cnt, _ := m.DB("").C(collection).Find(bson.M{"userid": uid}).Count()
+	return cnt
+}
 
 func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
   var selector bson.M 

@@ -91,7 +91,7 @@
             <ul>
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/dashboard"{{else}}"{{.Vw.Base}}account/login"{{end}}>Dashboard</a></li>
               <li><a href={{if .Vw.User}}"#"{{else}}"{{.Vw.Base}}account/login"{{end}}>Domain Blackists</a></li>              
-              <li><a href={{if .Vw.User}}"#"{{else}}"{{.Vw.Base}}account/login"{{end}}>Private Blacklist</a></li>
+              <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/plist"{{else}}"{{.Vw.Base}}account/login"{{end}}>Private Blacklist</a></li>
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/profile"{{else}}"{{.Vw.Base}}account/login"{{end}}>Profile</a></li>
             </ul>
           </div>
