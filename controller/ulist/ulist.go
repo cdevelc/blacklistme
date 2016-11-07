@@ -6,6 +6,7 @@ import "q29"
 import "q29/validfield"
 import "blacklistme/model/apikey"
 import "blacklistme/model/emaddr"
+import "blacklistme/model/domain"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	return true
@@ -17,6 +18,7 @@ func Dashboard(q *q29.ReqRsp) {
 		LastLoginTime string
 		Apikey string
 		Plistinfo string
+		Dlistinfo string
 	}
 	t, _ := time.Parse("2006-01-02 15:04:05", q.U.LastLoginTime)
 	page.LastLoginTime = fmt.Sprintf(t.Format("January 2, 2006 3:04PM"))
@@ -29,6 +31,12 @@ func Dashboard(q *q29.ReqRsp) {
 		page.Plistinfo = "none"
 	} else {
 		page.Plistinfo = fmt.Sprintf("%d email address entries", plistcount)
+	}
+	dlistcount := domain.ListByUidCount(q.M, q.U.Id)	
+	if dlistcount == 0 {
+		page.Dlistinfo = "none"
+	} else {
+		page.Dlistinfo = fmt.Sprintf("%d domain lists", dlistcount)
 	}
 	page.Vw.Template = "ulist/dashboard"	
 	q29.Render(q, &page)
@@ -120,4 +128,16 @@ func PlistDel(q *q29.ReqRsp) {
 		}		
 	}
 	q29.Redirect(q, "ulist/plist")
+}
+
+func Dlist(q *q29.ReqRsp) {
+	var page struct {
+		Vw q29.View
+		Dlist []domain.Domain
+		DlistCount int
+		FlashMsg string
+	}
+	domain.ListByUid(q.M, q.U.Id, &page.Dlist)
+	page.DlistCount = len(page.Dlist)
+	q29.Render(q, &page)
 }
