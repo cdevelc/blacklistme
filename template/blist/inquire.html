@@ -1,7 +1,7 @@
 {{define "body"}}
 {{$page := .}}
 <nav class="breadcrumbs">
-  <p><a href="{{.Vw.Base}}blist">Blacklist</a>&nbsp;&nbsp;&#8594;&nbsp;
+  <p><a href="{{.Vw.Base}}blist">BlackList</a>&nbsp;&nbsp;&#8594;&nbsp;
     <a href="{{.Vw.Base}}blist">Email Address</a>&nbsp;&nbsp;&#8594;&nbsp;
     <strong>Inquiry</strong>
   </p>
@@ -11,9 +11,9 @@
   <h2><span {{if $page.Found}}class="found"{{end}}>{{$page.Email}}</span></h2>
   <div class="notice">
     {{if $page.Found}}
-    <p>This email address is already in our blacklist.  If you are the owner of this address and you no longer want it in the blacklist then click <strong>remove</strong> below.</p>    
+    <p>This email address is already in our BlackList.  If you are the owner of this address and you no longer want it in the BlackList then click <strong>remove</strong> below.</p>    
     {{else}}
-    <p>This email address is not currently in our blacklist. If you are the owner of this address you may add it to the blacklist by clicking below.</p>
+    <p>This email address is not currently in our BlackList. If you are the owner of this address you may add it to the BlackList by clicking below.</p>
     {{end}}
   </div>
 </div>
@@ -24,7 +24,7 @@
       {{if $page.Found}}
       <button type="submit">Remove</button>
       {{else}}
-      <button type="submit">Blacklist</button>
+      <button type="submit">BlackList</button>
       {{end}}
     </fieldset>
   </form>

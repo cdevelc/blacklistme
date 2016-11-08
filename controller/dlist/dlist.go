@@ -20,5 +20,6 @@ func Dlist(q *q29.ReqRsp) {
 	}
 	domain.ListByUid(q.M, q.U.Id, &page.Dlist)
 	page.DlistCount = len(page.Dlist)
+	page.Vw.Template = "dlist/dlist"
 	q29.Render(q, &page)
 }

@@ -15,17 +15,17 @@
       </table>
     </div>
 {{else}}
-    <div><p>You do not currently have a private email Black List.</p>    
+    <div><p>You do not currently have a private email BlackList.</p></div>
 {{end}}
   </div>    
 </div>
 <div id="modaladd" class="modal">
   <div class="gridwrap">
     <div class="acct">
-      <h3>Add An Email Address to your Private Black List</h3>
+      <h3>Add An Email Address to your Private BlackList</h3>
       <form name="email" action="{{.Vw.Base}}ulist/plistadd" method="POST" onsubmit="return validateForm('email')">
         <ul>
-          <li>You may add an email address to this list at any time.  When you query our API for a potentially blacklisted address, the addresses in this list will also return positive blacklist hits</li>
+          <li>You may add an email address to this list at any time.  When you query our API for a potentially BlackListed address, the addresses in this list will also return positive BlackListMe hits</li>
           <li>
             <label>Email</label>
             <input name="email" type="text" maxlength="60" placeholder="Email Address" autocomplete="off" autocapitalize="off" autocorrect="off" autofocus >
@@ -41,7 +41,7 @@
 <div id="modaldel" class="modal">
   <div class="gridwrap">
     <div class="acct">
-      <h3>Remove an Email Address from your Private Black List</h3>
+      <h3>Remove an Email Address from your Private BlackList</h3>
       <form name="emaildel" action="{{.Vw.Base}}ulist/plistdel" method="POST">
         <ul>
           <li>You may remove an email address from this list at any time.</li>

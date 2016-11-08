@@ -1,0 +1,84 @@
+{{define "body"}}
+{{$page := .}}
+<div id="ulist">
+  {{template "umenu" .}}
+  <div id="ucontent">
+    {{if .Vw.FlashMsg}}<div id="flash">{{.Vw.FlashMsg}}</div>{{end}}
+    <h2>Domain Blacklists</h2>
+    <div style="width: 75%">This is a list of domains that are under your control.  You may add and remove individual addresses within these domains from our blacklist.  You may also add and remove specific domains from your control after email confirmation.</div>
+    <br>
+    <a class="btn gomodaladd">Add A Domain</a>
+{{if .DlistCount}}
+    <div style="padding-top: 24px;">
+      <table id="emtab" class="emtable">
+        <tr class="head"><td><a class="btn embtn" >Domain&nbsp;&nbsp;<span id="c1"></span></a></td><td><a class="btn dtbtn">Date Added&nbsp;&nbsp;<span id="c2"></span></a></td></tr>
+      </table>
+    </div>
+{{else}}
+    <div><p>You do not currently have any domains under your blacklist control.</p></div>
+{{end}}
+  </div>    
+</div>
+<div id="modaladd" class="modal">
+  <div class="gridwrap">
+    <div class="acct">
+      <h3>Add A Domain to your BlackList Control</h3>
+      <form name="domainform" action="{{.Vw.Base}}dlist/add" method="POST" onsubmit="return validateForm('domain')">
+        <ul>
+          <li>You may request the addition of a domain to your control here.  We will send a confirmation email to the Registrar's address of record for the domain.  Please follow the link in that email to complete your domain validation.</li>
+          <li>
+            <label>Domain Name</label>
+            <input name="domain" type="text" maxlength="60" placeholder="Domain Name" autocomplete="off" autocapitalize="off" autocorrect="off" autofocus >
+            <span id="domain.errlabel" class="errlabel"></span>
+          </li>
+          <li class="fielderror" id="domain.error"></li>
+          <li class="center"><button type="submit">Add Domain</button><a class="cancel unmodaladd">Cancel</a></li>
+        </ul>
+      </form>
+    </div>
+  </div>    
+</div>
+<div id="modaldel" class="modal">
+  <div class="gridwrap">
+    <div class="acct">
+      <h3>Remove a Domain from your BlackList Control</h3>
+      <form name="domaindel" action="{{.Vw.Base}}dlist/del" method="POST">
+        <ul>
+          <li>You may remove a domain from this list at any time.</li>
+          <li><label>Domain Name</label><input name="domain" type="text" readonly ></li>
+          <li class="center"><button type="submit">Remove Domain</button><a class="cancel unmodaldel">Cancel</a></li>
+        </ul>
+      </form>
+    </div>
+  </div>    
+</div>
+
+<script src="{{.Vw.Base}}js/emtable.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var plist = [
+  {{with .Dlist}}{{range .}}{ em: "{{.Email}}", dt: "{{.Created}}" },
+  {{end}}{{end}}
+  ];
+  var plist_len = {{.DlistCount}};
+  var plistByEmail = plist.slice(0);
+  plistByEmail.sort(function(a,b) {
+  var x = a.em;
+  var y = b.em;
+  return (x<y)? -1: (x>y)? 1 : 0;
+  });
+  var plistByDate = plist.slice(0);
+  plistByDate.sort(function(a,b) {
+  return a.dt - b.dt;
+  });
+  
+$(document).ready(function() {
+   var el = document.getElementById("flash");
+   if (el != undefined) {
+     el.style.opacity = 0;
+     el.style.height = 0;
+     el.style.padding = 0;
+   }   
+   emTableInit();
+});
+</script>
+{{end}}

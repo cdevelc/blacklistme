@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Blacklist Me</title>
+  <title>BlackListMe</title>
   <link href="{{.Vw.Base}}favicon.ico" rel="shortcut icon" type="image/x-icon">
   <link href="{{.Vw.Base}}css/style.css" rel="stylesheet" type="text/css">
   <link href="{{.Vw.Base}}css/styleaccount.css" rel="stylesheet" type="text/css">
@@ -69,16 +69,16 @@
   </div><!-- topline -->
   <div class="banner">
     <img src="{{.Vw.Base}}img/groundh2.png">
-    <a href="{{.Vw.Base}}"><span class="logo">blacklistme</span></a>
+    <a href="{{.Vw.Base}}"><span class="logo">BlackListMe</span></a>
     <div class="nav">
     <ul>
       <li><a href="#" >Services<span class="ddown">+</span></a>
         <div class="ddwrap">
           <div class="ddpanel">
             <ul>
-              <li><a href="#">Email Blacklist</a></li>
-              <li><a href="#">Domain Blacklist</a></li>              
-              <li><a href="#">Private Blacklist</a></li>
+              <li><a href="#">Email BlackList</a></li>
+              <li><a href="#">Domain BlackList</a></li>              
+              <li><a href="#">Private BlackList</a></li>
               <li><a href="#">API</a></li>
             </ul>
           </div>
@@ -90,8 +90,8 @@
           <div class="ddpanel lower">
             <ul>
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/dashboard"{{else}}"{{.Vw.Base}}account/login"{{end}}>Dashboard</a></li>
-              <li><a href={{if .Vw.User}}"#"{{else}}"{{.Vw.Base}}account/login"{{end}}>Domain Blackists</a></li>              
-              <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/plist"{{else}}"{{.Vw.Base}}account/login"{{end}}>Private Blacklist</a></li>
+              <li><a href={{if .Vw.User}}"{{.Vw.Base}}dlist/dlist"{{else}}"{{.Vw.Base}}account/login"{{end}}>Domain BlackLists</a></li>              
+              <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/plist"{{else}}"{{.Vw.Base}}account/login"{{end}}>Private BlackList</a></li>
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/profile"{{else}}"{{.Vw.Base}}account/login"{{end}}>Profile</a></li>
             </ul>
           </div>
@@ -116,7 +116,7 @@
     <li {{if eq .Vw.Action "dashboard"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/dashboard">Dashboard</a></li>
     <li {{if eq .Vw.Action "profile"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/profile">Profile</a></li>
     <li {{if eq .Vw.Action "apikey"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/apikey">API Key</a></li>
-    <li><a href="#">Domain Lists</a></li>    
+    <li {{if eq .Vw.Controller "dlist"}}class="active"{{end}}><a href="{{.Vw.Base}}dlist/dlist">Domain Lists</a></li>    
     <li {{if eq .Vw.Action "plist"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/plist">Private List</a></li>
   </ul>
 </div>
