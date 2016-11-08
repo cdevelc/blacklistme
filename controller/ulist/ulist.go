@@ -9,7 +9,9 @@ import "blacklistme/model/emaddr"
 import "blacklistme/model/domain"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
-	return true
+	if q.U != nil { return true }
+	q29.Redirect(q, "account/login")
+	return false
 }
 
 func Dashboard(q *q29.ReqRsp) {
@@ -35,6 +37,8 @@ func Dashboard(q *q29.ReqRsp) {
 	dlistcount := domain.ListByUidCount(q.M, q.U.Id)	
 	if dlistcount == 0 {
 		page.Dlistinfo = "none"
+	} else if dlistcount == 1 {
+		page.Dlistinfo = "1 domain list"
 	} else {
 		page.Dlistinfo = fmt.Sprintf("%d domain lists", dlistcount)
 	}
@@ -128,16 +132,4 @@ func PlistDel(q *q29.ReqRsp) {
 		}		
 	}
 	q29.Redirect(q, "ulist/plist")
-}
-
-func Dlist(q *q29.ReqRsp) {
-	var page struct {
-		Vw q29.View
-		Dlist []domain.Domain
-		DlistCount int
-		FlashMsg string
-	}
-	domain.ListByUid(q.M, q.U.Id, &page.Dlist)
-	page.DlistCount = len(page.Dlist)
-	q29.Render(q, &page)
 }
