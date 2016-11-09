@@ -73,13 +73,13 @@
 .utable .row {
  margin: 0 auto;
  padding: .5em;
- width: 100%
- display: table-row;
+ width: 100%; 
+/* display: table-row;*/
  clear: both;
 }
 .utable hr {
  border: none;
- border-top: 1px solid #3b9712;
+ border-top: 2px solid #3b9712;
  margin: 0;
 }
 .utable hr.hrg {
@@ -90,9 +90,15 @@
  display: table-cell;
  float: left;
 }
-.utable .cell .w1 { width: 20%; }
-.utable .cell .w2 { width: 60%; }
-.utable .cell .w3 { width: 20%; }
+.utable .w1 { width: 20%; }
+.utable .w2 { width: 60%; }
+.utable .w3 { width: 20%; }
+
+.utable .w10 { width: 10%; }
+.utable .w20 { width: 20%; }
+.utable .w30 { width: 30%; }
+.utable .w40 { width: 40%; }
+.utable .w50 { width: 50%; }
 
 #ucontent a.btn {
  margin0: 0 0 2em 0;

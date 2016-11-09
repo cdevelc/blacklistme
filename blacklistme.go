@@ -64,8 +64,9 @@ func Dispatch(q *q29.ReqRsp) {
 	case "dlist":
 		if !dlist.BeforeFilter(q) { return }
 		switch (q.Action) {
-		case "index":          dlist.Dlist(q)
-		case "dlist":          dlist.Dlist(q)
+		case "index":          dlist.Index(q)
+		case "add":            dlist.Add(q)
+		case "del":            dlist.Del(q)			
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

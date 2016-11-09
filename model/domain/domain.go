@@ -13,7 +13,7 @@ type Domain struct {
 	Confirm   bool
 }
 
-var collection string = "domainlist"
+var collection string = "domains"
 
 func Upsert(m *mgo.Session, dm *Domain) bool {
   var selector bson.M 
@@ -36,6 +36,15 @@ func Upsert(m *mgo.Session, dm *Domain) bool {
 
 func Update(m *mgo.Session, dm *Domain) {
 	m.DB("").C(collection).Update(bson.M{"_id": dm.Id}, dm)
+}
+
+func Delete(m *mgo.Session, id bson.ObjectId) bool {
+	if id != "" {
+		err := m.DB("").C(collection).Remove(bson.M{"_id": id})
+		if err == nil { return true }
+		log.Printf("%s Delete: %s\n", collection, err)
+	}
+	return false
 }
 
 func Find(m *mgo.Session, domain string, dm *Domain) bool {

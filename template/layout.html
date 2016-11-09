@@ -90,7 +90,7 @@
           <div class="ddpanel lower">
             <ul>
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/dashboard"{{else}}"{{.Vw.Base}}account/login"{{end}}>Dashboard</a></li>
-              <li><a href={{if .Vw.User}}"{{.Vw.Base}}dlist/dlist"{{else}}"{{.Vw.Base}}account/login"{{end}}>Domain BlackLists</a></li>              
+              <li><a href={{if .Vw.User}}"{{.Vw.Base}}dlist/index"{{else}}"{{.Vw.Base}}account/login"{{end}}>Domain BlackLists</a></li>              
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/plist"{{else}}"{{.Vw.Base}}account/login"{{end}}>Private BlackList</a></li>
               <li><a href={{if .Vw.User}}"{{.Vw.Base}}ulist/profile"{{else}}"{{.Vw.Base}}account/login"{{end}}>Profile</a></li>
             </ul>
@@ -116,7 +116,7 @@
     <li {{if eq .Vw.Action "dashboard"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/dashboard">Dashboard</a></li>
     <li {{if eq .Vw.Action "profile"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/profile">Profile</a></li>
     <li {{if eq .Vw.Action "apikey"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/apikey">API Key</a></li>
-    <li {{if eq .Vw.Controller "dlist"}}class="active"{{end}}><a href="{{.Vw.Base}}dlist/dlist">Domain Lists</a></li>    
+    <li {{if eq .Vw.Controller "dlist"}}class="active"{{end}}><a href="{{.Vw.Base}}dlist/index">Domain Lists</a></li>    
     <li {{if eq .Vw.Action "plist"}}class="active"{{end}}><a href="{{.Vw.Base}}ulist/plist">Private List</a></li>
   </ul>
 </div>

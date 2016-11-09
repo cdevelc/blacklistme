@@ -8,7 +8,8 @@ var erro = {
  oldpassword: { str: '', lab: '' },    
  email:       { str: '', lab: '' },
  firstname:   { str: '', lab: '' },
- lastname:    { str: '', lab: '' }
+ lastname:    { str: '', lab: '' },
+ domain:      { str: '', lab: '' }
 };
 function erroSet(k, s, l) {
  erro_count++;    
@@ -17,12 +18,13 @@ function erroSet(k, s, l) {
 }
 
 var formfields = {
- register:  ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
- cpassword: ['password', 'passagain', 'oldpassword'],
- cemail:    ['email', 'password'],
- cname:     ['firstname', 'lastname', 'password'],
- login:     ['username', 'password'],
- email:     ['email'] 
+ register:   ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
+ cpassword:  ['password', 'passagain', 'oldpassword'],
+ cemail:     ['email', 'password'],
+ cname:      ['firstname', 'lastname', 'password'],
+ login:      ['username', 'password'],
+ email:      ['email'],
+ domainform: ['domain']
 };
 
 function validateForm(fname) {
@@ -39,7 +41,8 @@ function validateForm(fname) {
   case 'oldpassword': validate_password( key, val); break;      
   case 'email': validate_email( key, val); break;
   case 'firstname': validate_humanname( key, val, "First"); break;
-  case 'lastname': validate_humanname( key, val, "Last"); break;            
+  case 'lastname': validate_humanname( key, val, "Last"); break;
+  case 'domain': validate_domainname( key, val); break;
   default: return false; break;
   }
   document.getElementById(key+".error").innerHTML = erro[key].str;
@@ -95,6 +98,13 @@ function validate_email(k, e) {
   erroSet(k, "Email address is too long", "invalid");
  else if (!e.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/))
   erroSet(k, "Email address contains invalid characters", "invalid");
+}
+
+function validate_domainname(k, e) {
+ if (!e || e.length == 0)
+  erroSet(k, "", "required");
+ else if (!e.match(/^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$/))
+  erroSet(k, "Domain contains unexpected characters or invalid formatting", "invalid");
 }
     
 function validate_password(k, p) {
