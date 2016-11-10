@@ -66,7 +66,10 @@ func Dispatch(q *q29.ReqRsp) {
 		switch (q.Action) {
 		case "index":          dlist.Index(q)
 		case "add":            dlist.Add(q)
-		case "del":            dlist.Del(q)			
+		case "del":            dlist.Del(q)
+		case "elist":          dlist.Elist(q)
+		case "elistadd":       dlist.ElistAdd(q)
+		case "elistdel":       dlist.ElistDel(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

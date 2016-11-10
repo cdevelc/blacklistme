@@ -27,6 +27,9 @@ func ListByUidCount(m *mgo.Session, collection string, uid bson.ObjectId) int {
 	cnt, _ := m.DB("").C(collection).Find(bson.M{"userid": uid}).Count()
 	return cnt
 }
+func ListByDid(m *mgo.Session, collection string, did bson.ObjectId, em *[]Emaddr) {
+	m.DB("").C(collection).Find(bson.M{"domainid": did}).All(em)
+}
 
 func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
   var selector bson.M 
@@ -76,6 +79,14 @@ func FindBySig(m *mgo.Session, collection string, sig string, em *Emaddr) bool {
 
 func FindByUid(m *mgo.Session, collection string, uid bson.ObjectId, emaddr string, em *Emaddr) bool {
 	err := m.DB("").C(collection).Find(bson.M{"userid": uid, "email": emaddr}).One(em)
+	if err == nil { return true }
+	if err.Error() != "not found" {
+		log.Printf("%s Find: %s\n", collection, err)
+	}
+	return false
+}
+func FindByDid(m *mgo.Session, collection string, did bson.ObjectId, emaddr string, em *Emaddr) bool {
+	err := m.DB("").C(collection).Find(bson.M{"domainid": did, "email": emaddr}).One(em)
 	if err == nil { return true }
 	if err.Error() != "not found" {
 		log.Printf("%s Find: %s\n", collection, err)

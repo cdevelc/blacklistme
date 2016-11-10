@@ -22,8 +22,8 @@
       <div class="cell w50">&nbsp;&nbsp;<strong>{{.Domain}}</strong></div>
       <div class="cell w20">{{if .Confirm}}Active{{else}}Pending{{end}}</div>
       <div class="cell w10"><a class="btn" onclick="gomodaldel({{.Domain}});">Delete</a></div>
-      <div class="cell w10"><a class="btn">Manage</a></div>
-    </div>    
+      <div class="cell w10"><a class="btn" href="{{$page.Vw.Base}}dlist/elist?dname={{.Domain}}">Manage</a></div>
+    </div>
     <div class="row"><hr class="hrg"></div>{{end}}{{end}}
 {{else}}
     <div class="row"><p>You do not currently have any domains under your BlackList control.</p></div>

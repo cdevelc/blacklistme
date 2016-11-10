@@ -37,8 +37,9 @@ function emTableInit() {
       else
          dtA2Z();
    });
-   
-   emA2Z();
+    if (plist_len > 0) {
+        emA2Z();
+    }
 }
  
 function emA2Z() {

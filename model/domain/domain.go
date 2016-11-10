@@ -25,6 +25,7 @@ func Upsert(m *mgo.Session, dm *Domain) bool {
 		selector = bson.M{"_id": dm.Id}	
 	}
 	dm.Created = time.Now().Format("2006-01-02 15:04:05")
+
 	changeInfo,err := m.DB("").C(collection).Upsert(selector, dm)
 	if err == nil {
 		if dm.Id == "" { dm.Id = changeInfo.UpsertedId.(bson.ObjectId) }
