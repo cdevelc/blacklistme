@@ -2,6 +2,8 @@ package dlist
 
 //import "log"
 //import "time"
+import "strings"
+import "net/http"
 import "q29"
 import "q29/validfield"
 import "blacklistme/model/domain"
@@ -61,7 +63,8 @@ func Del(q *q29.ReqRsp) {
 	if emsg == "" {
 		found := domain.Find(q.M, domname, &dm)
 		if found == true && dm.UserId == q.U.Id {
-			//need a lot of code here to delete email addresses in the list before domain is deleted.
+			emaddr.DeleteByDomainId(q.M, "domainaddrs", dm.Id)
+			//!!! need code here to delete email addresses in the MAIN blacklist !!!
 			domain.Delete(q.M, dm.Id)
 		}
 	}
@@ -79,7 +82,11 @@ func Elist(q *q29.ReqRsp) {
 		FlashMsg string
 	}
 	page.Dname = q.R.URL.Query().Get("dname")
-	domain.Find(q.M, page.Dname, &page.Domain)
+	found := domain.Find(q.M, page.Dname, &page.Domain)
+	if found == false || page.Domain.UserId != q.U.Id {
+		http.Error(q.W, q.R.URL.Path+" invalid domain", 404)
+		return
+	}
 	emaddr.ListByDid(q.M, "domainaddrs", page.Domain.Id, &page.Elist)
 	page.ElistCount = len(page.Elist)
 	q29.Render(q, &page)
@@ -88,6 +95,7 @@ func Elist(q *q29.ReqRsp) {
 func ElistAdd(q *q29.ReqRsp) {
 	var emAddr emaddr.Emaddr
 	var dm domain.Domain
+
 	q.R.ParseForm()
 	dname := q.R.FormValue("dname")
   email := q.R.FormValue("email")
@@ -95,8 +103,13 @@ func ElistAdd(q *q29.ReqRsp) {
 	if emsg != "" {
 		q29.SetFlash(q, "That email address was invalid.")
 	} else {
-		domain.Find(q.M, dname, &dm)
-		found := emaddr.FindByDid(q.M, "domainaddrs", dm.Id, email, &emAddr)
+		found := domain.Find(q.M, dname, &dm)
+		emdom := strings.Split(email, "@")
+		if found == false || dname != emdom[1] || dm.UserId != q.U.Id {
+			http.Error(q.W, q.R.URL.Path+" invalid domain", 404)
+			return
+		}
+		found = emaddr.FindByDid(q.M, "domainaddrs", dm.Id, email, &emAddr)
 		if found == false {
 			emAddr.Id = ""
 			emAddr.Email = email
@@ -104,6 +117,7 @@ func ElistAdd(q *q29.ReqRsp) {
 			emAddr.DomainId = dm.Id
 			emaddr.Upsert(q.M, "domainaddrs", &emAddr)
 		}
+		//!!! need code here to add address to main blacklist (sha256)
 		q29.SetFlash(q, "The email address "+email+" has been added to this Domain BlackList.")
 	}
 	q29.Redirect(q, "dlist/elist?dname="+dname)
@@ -119,8 +133,12 @@ func ElistDel(q *q29.ReqRsp) {
 	if emsg != "" {
 		q29.SetFlash(q, "That email address was invalid.")		
 	} else {
-		domain.Find(q.M, dname, &dm)		
-		found := emaddr.FindByDid(q.M, "domainaddrs", dm.Id, email, &emAddr)
+		found := domain.Find(q.M, dname, &dm)
+		if found == false || dm.UserId != q.U.Id {
+			http.Error(q.W, q.R.URL.Path+" invalid domain", 404)
+			return
+		}
+		found = emaddr.FindByDid(q.M, "domainaddrs", dm.Id, email, &emAddr)
 		if found == false {
 			q29.SetFlash(q, "That email address was not found.");
 		} else {

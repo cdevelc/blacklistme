@@ -59,6 +59,23 @@ func Delete(m *mgo.Session, collection string, id bson.ObjectId) bool {
 	return false
 }
 
+func DeleteByEmail(m *mgo.Session, collection string, e string) bool {
+	if e != "" {
+		err := m.DB("").C(collection).Remove(bson.M{"email": e})
+		if err == nil { return true }
+		log.Printf("%s DeleteByEmail: %s\n", collection, err)
+	}
+	return false
+}
+func DeleteByDomainId(m *mgo.Session, collection string, did bson.ObjectId) bool {
+	if did != "" {
+		_,err := m.DB("").C(collection).RemoveAll(bson.M{"domainid": did})
+		if err == nil { return true }
+		log.Printf("%s DeleteAllDid: %s\n", collection, err)
+	}
+	return false
+}
+
 func Find(m *mgo.Session, collection string, e string, em *Emaddr) bool {
 	err := m.DB("").C(collection).Find(bson.M{"email": e}).One(em)
 	if err == nil { return true }

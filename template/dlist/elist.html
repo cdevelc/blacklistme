@@ -4,10 +4,9 @@
   {{template "umenu" .}}
   <div id="ucontent">
     {{if .Vw.FlashMsg}}<div id="flash">{{.Vw.FlashMsg}}</div>{{end}}
-    <h2>Domain <u>{{.Dname}}</u> BlackList</h2>
-    <div style="width: 75%"></div>
-    <br>
-    <a class="btn gomodaladd">Add An Address</a>
+    <h2>Manage Domain <u>{{.Dname}}</u> BlackList</h2>
+    <div style="width: 75%">The addresses in this list are part of the global BlackListMe database.  Use this list to keep retired domain email addresses out of spam.</div>
+    <div style="padding-top: 24px;"><a class="btn gomodaladd">Add An Address</a><span style="padding-left: 6em"><a class="btn" href="{{.Vw.Base}}dlist/index">Done</a></span></div>
 {{if .ElistCount}}
     <div style="padding-top: 24px;">
       <table id="emtab" class="emtable">
@@ -26,7 +25,7 @@
       <form name="email" action="{{.Vw.Base}}dlist/elistadd" method="POST" onsubmit="return validateForm('email')">
         <input type="hidden" name="dname" value="{{.Dname}}">        
         <ul>
-          <li>You may add an email address to this list at any time.</li>
+          <li>You may add an email address to this list at any time.  It will also be added to the global BlackListMe database.</li>
           <li>
             <label>Email</label>
             <input name="email" type="text" maxlength="64" placeholder="Email" autocomplete="off" autocapitalize="off" autocorrect="off" autofocus value="@{{.Dname}}">
@@ -46,7 +45,7 @@
       <form name="emaildel" action="{{.Vw.Base}}dlist/elistdel" method="POST">
         <input type="hidden" name="dname" value="{{.Dname}}">                
         <ul>
-          <li>You may remove an email address from this list at any time.</li>
+          <li>You may remove an email address from this list at any time.  It will also be removed from the global BlackListMe database.</li>
           <li><label>Email</label><input name="email" type="text" readonly ></li>
           <li class="center"><button type="submit">Remove Address</button><a class="cancel unmodaldel">Cancel</a></li>
         </ul>

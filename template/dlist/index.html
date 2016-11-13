@@ -56,7 +56,7 @@
       <h3>Remove a Domain from your BlackList Control</h3>
       <form name="domaindel" action="{{.Vw.Base}}dlist/del" method="POST">
         <ul>
-          <li>You may remove a domain from this list at any time.</li>
+          <li>You may remove a domain from this list at any time.  When you remove the domain all of its associated email addresses will be deleted from the database.</li>
           <li><label>Domain Name</label><input name="domain" type="text" readonly ></li>
           <li class="center"><button type="submit">Remove Domain</button><a class="cancel unmodaldel">Cancel</a></li>
         </ul>
