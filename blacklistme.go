@@ -66,6 +66,7 @@ func Dispatch(q *q29.ReqRsp) {
 		switch (q.Action) {
 		case "index":          dlist.Index(q)
 		case "add":            dlist.Add(q)
+		case "addconfirm":     dlist.AddConfirm(q)			
 		case "del":            dlist.Del(q)
 		case "elist":          dlist.Elist(q)
 		case "elistadd":       dlist.ElistAdd(q)

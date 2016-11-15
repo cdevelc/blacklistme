@@ -12,6 +12,7 @@ import "blacklistme/util/domaintoemail"
 import "github.com/mailgo"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
+	if q.U == nil && q.Action == "addconfirm" { return true } //allow Domain Confirm without login
 	if q.U != nil { return true }
 	q29.Redirect(q, "account/login")
 	return false
@@ -32,15 +33,17 @@ func Index(q *q29.ReqRsp) {
 func sendEmailToDomainContact(dom string, q *q29.ReqRsp) {
 	//seems to take a little while, so we will call here as a goroutine and let the web user move on
 	emaddress, _ := domaintoemail.Get(dom)
-	log.Printf("dom %s email = %s", dom, emaddress)
 	if emaddress != "" {
 		s := mailgo.Session {
 			Email: emaddress,
-			URL: "http://"+q.R.Host+q29.AssetURL(q, "dlist/complete?dom="+dom+"&vps="+q.U.Passsalt),
+			URL: "http://"+q.R.Host+q29.AssetURL(q, "dlist/addconfirm?dom="+dom+"&vps="+q.U.Passsalt),
 		}
 		log.Printf("emurl = %s", s.URL)
 		//mailgo.ConfirmDomain(&s)
 	}	
+}
+
+func AddConfirm(q *q29.ReqRsp) {
 }
 
 func Add(q *q29.ReqRsp) {
