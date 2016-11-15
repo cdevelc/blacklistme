@@ -9,19 +9,19 @@ import (
 
 func TestGoodDomain(t *testing.T){
 	domain := "google.com"
-	email,err := get(domain)
+	email,err := Get(domain)
 	if err != nil {
 		fmt.Printf("test error, for domain %s, email string = %s, err = %v\n",domain, email,err)
 		t.Fail()
 	}
 	domain = "blacklistme.net"
-	email,err = get(domain)
+	email,err = Get(domain)
 	if err != nil {
 		fmt.Printf("test error, for domain %s, email string = %s, err = %v\n",domain, email,err)
 		t.Fail()
 	}
 	domain = "ipspace.net"
-	email,err = get(domain)
+	email,err = Get(domain)
 	if err != nil {
 		fmt.Printf("test error, for domain %s, email string = %s, err = %v\n",domain, email,err)
 		t.Fail()
@@ -38,7 +38,7 @@ func TestGoodDomain(t *testing.T){
 
 func TestBadDomain(t *testing.T){
 	domain := "gooberdoober.com"
-	_,err := get(domain)
+	_,err := Get(domain)
 	if err == nil {
 		fmt.Printf("test error, for domain %s, should have failed but didnt, err = %v\n",domain,err)
 		t.Fail()
@@ -47,7 +47,7 @@ func TestBadDomain(t *testing.T){
 
 func TestMalformedDomain(t *testing.T){
 	domain := "google@.com"
-	_,err := get(domain)
+	_,err := Get(domain)
 	if err == nil {
 		fmt.Printf("test error, for domain %s, should have failed but didnt, err = %v\n",domain,err)
 		t.Fail()

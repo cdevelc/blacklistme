@@ -1,6 +1,6 @@
 package dlist
 
-//import "log"
+import "log"
 //import "time"
 import "strings"
 import "net/http"
@@ -8,6 +8,8 @@ import "q29"
 import "q29/validfield"
 import "blacklistme/model/domain"
 import "blacklistme/model/emaddr"
+import "blacklistme/util/domaintoemail"
+import "github.com/mailgo"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	if q.U != nil { return true }
@@ -27,6 +29,20 @@ func Index(q *q29.ReqRsp) {
 	q29.Render(q, &page)
 }
 
+func sendEmailToDomainContact(dom string, q *q29.ReqRsp) {
+	//seems to take a little while, so we will call here as a goroutine and let the web user move on
+	emaddress, _ := domaintoemail.Get(dom)
+	log.Printf("dom %s email = %s", dom, emaddress)
+	if emaddress != "" {
+		s := mailgo.Session {
+			Email: emaddress,
+			URL: "http://"+q.R.Host+q29.AssetURL(q, "dlist/complete?dom="+dom+"&vps="+q.U.Passsalt),
+		}
+		log.Printf("emurl = %s", s.URL)
+		//mailgo.ConfirmDomain(&s)
+	}	
+}
+
 func Add(q *q29.ReqRsp) {
 	var dm domain.Domain
 
@@ -39,12 +55,13 @@ func Add(q *q29.ReqRsp) {
 		return
 	}
 	found := domain.Find(q.M, domname, &dm)
-	if found == true && dm.UserId != q.U.Id {
+	if found == true {
 		q29.SetFlash(q, "The domain "+domname+" is already under BlackList control.")				
 		q29.Redirect(q, "dlist/index")
 		return
 	}
 	if found == false {
+		go sendEmailToDomainContact(domname, q)
 		dm.Id = ""
 		dm.Domain = domname
 		dm.UserId = q.U.Id
