@@ -49,3 +49,17 @@ a.faqQ:before {
  font-size: .9em;
  font-weight: normal;
 }
+.statusentry {
+ padding: 10px 0 0 0;
+ width: 750px;
+}
+.statusentry .head {
+ width: 100%;    
+ font-size: 1.3em;
+ font-weight: bold;
+}
+.statusentry .date {
+ float: right;
+ font-size: .75em;
+ font-weight: normal;
+}

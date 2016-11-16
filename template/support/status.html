@@ -1,0 +1,24 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">BlackList</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}support/status">Support</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Status</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <h2>BlackListMe System Status</h2>
+  <div class="statusentry">
+    <div class="head">Brief Outage<span class="date">Nov 12, 2016</span></div>
+    <p>
+      We experienced a brief outage this afternoon.  One of our servers ran out of storage.  We have upgraded the system.  Everything should be operational now.
+    </p>
+  </div>
+  <div class="statusentry">
+    <div class="head">Lookin' Good<span class="date">Nov 11, 2016</span></div>
+    <p>
+      At this time all systems are online.  There are no known issues.
+    </p>
+  </div>
+</div>
+{{end}}

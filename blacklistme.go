@@ -103,6 +103,7 @@ func Dispatch(q *q29.ReqRsp) {
 		if !support.BeforeFilter(q) { return }
 		switch (q.Action) {
 		case "faq":          support.FAQ(q)
+		case "status":       support.Status(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
