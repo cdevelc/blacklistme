@@ -6,6 +6,7 @@ import "strings"
 import "net/http"
 import "q29"
 import "q29/validfield"
+import "q29/session"
 import "blacklistme/model/domain"
 import "blacklistme/model/emaddr"
 import "blacklistme/util/domaintoemail"
@@ -30,13 +31,13 @@ func Index(q *q29.ReqRsp) {
 	q29.Render(q, &page)
 }
 
-func sendEmailToDomainContact(dom string, q *q29.ReqRsp) {
+func sendEmailToDomainContact(dom string, vos string, q *q29.ReqRsp) {
 	//seems to take a little while, so we will call here as a goroutine and let the web user move on
 	emaddress, _ := domaintoemail.Get(dom)
 	if emaddress != "" {
 		s := mailgo.Session {
 			Email: emaddress,
-			URL: "http://"+q.R.Host+q29.AssetURL(q, "dlist/addconfirm?dom="+dom+"&vps="+q.U.Passsalt),
+			URL: "http://"+q.R.Host+q29.AssetURL(q, "dlist/addconfirm?vos="+vos),
 		}
 		log.Printf("emurl = %s", s.URL)
 		//mailgo.ConfirmDomain(&s)
@@ -44,6 +45,21 @@ func sendEmailToDomainContact(dom string, q *q29.ReqRsp) {
 }
 
 func AddConfirm(q *q29.ReqRsp) {
+	var page struct {
+		Vw q29.View
+		Dm domain.Domain
+	}
+	
+	found := domain.FindByVos(q.M, q.R.URL.Query().Get("vos"), &page.Dm)
+	if found == false {
+		http.Error(q.W, q.R.URL.Path+" invalid request", 404)
+		return
+	}
+	if page.Dm.Confirm == false {
+		page.Dm.Confirm = true
+		domain.Update(q.M, &page.Dm)
+	}
+	q29.Render(q, &page)
 }
 
 func Add(q *q29.ReqRsp) {
@@ -64,10 +80,16 @@ func Add(q *q29.ReqRsp) {
 		return
 	}
 	if found == false {
-		go sendEmailToDomainContact(domname, q)
+		//nothing to do with "session", ShakeSalt is just a handy utility for generating
+		vos := session.ShakeSalt(domname) 		
+		//random, unique number for lookup later during confirm callback
+
+		go sendEmailToDomainContact(domname, vos, q)		
 		dm.Id = ""
 		dm.Domain = domname
 		dm.UserId = q.U.Id
+		dm.Vos = vos
+		dm.Confirm = false
 		domain.Upsert(q.M, &dm)
 	}
 	q29.SetFlash(q, "The domain "+domname+" has been added.")	

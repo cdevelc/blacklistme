@@ -11,6 +11,7 @@ type Domain struct {
 	UserId    bson.ObjectId
 	Created   string
 	Confirm   bool
+	Vos       string
 }
 
 var collection string = "domains"
@@ -50,6 +51,16 @@ func Delete(m *mgo.Session, id bson.ObjectId) bool {
 
 func Find(m *mgo.Session, domain string, dm *Domain) bool {
 	err := m.DB("").C(collection).Find(bson.M{"domain": domain}).One(dm)
+	if err == nil {
+		return true		
+	}
+	if err.Error() != "not found" {
+		log.Printf("%s Find: %s\n", collection, err)
+	}
+	return false
+}
+func FindByVos(m *mgo.Session, vos string, dm *Domain) bool {
+	err := m.DB("").C(collection).Find(bson.M{"vos": vos}).One(dm)
 	if err == nil {
 		return true		
 	}

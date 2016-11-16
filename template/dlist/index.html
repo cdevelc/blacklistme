@@ -20,9 +20,15 @@
     <div class="row"><hr></div>
     {{with .Dlist}}{{range .}}<div class="row">
       <div class="cell w50">&nbsp;&nbsp;<strong>{{.Domain}}</strong></div>
-      <div class="cell w20">{{if .Confirm}}Active{{else}}Pending{{end}}</div>
+      {{if .Confirm}}
+      <div class="cell w20">Active</div>
       <div class="cell w10"><a class="btn" onclick="gomodaldel({{.Domain}});">Delete</a></div>
       <div class="cell w10"><a class="btn" href="{{$page.Vw.Base}}dlist/elist?dname={{.Domain}}">Manage</a></div>
+      {{else}}
+      <div class="cell w20" title="awaiting email confirmation">Pending</div>
+      <div class="cell w10"><a class="btn" onclick="gomodaldel({{.Domain}});">Delete</a></div>
+      <div class="cell w10"><span title="awaiting email confirmation" class="graybtn">Manage</span></div>      
+      {{end}}
     </div>
     <div class="row"><hr class="hrg"></div>{{end}}{{end}}
 {{else}}
@@ -37,7 +43,7 @@
       <h3>Add A Domain to your BlackList Control</h3>
       <form name="domainform" action="{{.Vw.Base}}dlist/add" method="POST" onsubmit="return validateForm('domainform')">
         <ul>
-          <li>You may request the addition of a domain to your control here.  We will send a confirmation email to the Registrar's address of record for the domain.  Please follow the link in that email to complete your domain validation.</li>
+          <li>You may request the addition of a domain to your control here.  We will send a confirmation email to the Registrar's Technical contact address of record for the domain.  Please follow the link in that email to complete the domain validation.</li>
           <li>
             <label>Domain Name</label>
             <input name="domain" type="text" maxlength="60" placeholder="Domain Name" autocomplete="off" autocapitalize="off" autocorrect="off" autofocus >

@@ -1,0 +1,14 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}ulist/dashboard">My Account</a>&nbsp;&nbsp;&#8594;&nbsp;<a href="{{.Vw.Base}}dlist/index">Domain Lists</a>&nbsp;&nbsp;&#8594;&nbsp;<strong>Domain Confirmed</strong></p>
+</nav>
+<div class="gridwrap">
+  <div class="acct">
+    <h3>Domain Confirmation Complete</h3>
+    <ul>
+      <li>You have successfully confirmed <u>{{.Dm.Domain}}</u> domain ownership with BlackListMe.  You are master of your domain.</li>
+    </ul>
+  </div>
+</div>
+{{end}}
