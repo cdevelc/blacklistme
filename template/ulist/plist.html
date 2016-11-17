@@ -4,20 +4,22 @@
   {{template "umenu" .}}
   <div id="ucontent">
     {{if .Vw.FlashMsg}}<div id="flash">{{.Vw.FlashMsg}}</div>{{end}}
-    <h2>Private Black List</h2>
-    <div style="width: 75%">This is your list of spammy email addresses that you want to block.  When you call our API these addresses will match even if they are not in the main BlackListMe email database.</div>
-    <br>
-    <a class="btn gomodaladd">Add An Address</a>
-{{if .PlistCount}}
-    <div style="padding-top: 24px;">
-      <table id="emtab" class="emtable">
-        <tr class="head"><td><a class="btn embtn" >Email Address&nbsp;&nbsp;<span id="c1"></span></a></td><td><a class="btn dtbtn">Date Added&nbsp;&nbsp;<span id="c2"></span></a></td></tr>
-      </table>
-    </div>
-{{else}}
+    <div class="utable">
+      <h1>Private BlackList</h1>
+      <div class="row">This is your list of spammy email addresses that you want to block.  When you call our API these addresses will match even if they are not in the main BlackListMe email database.</div>
+      <div class="row"><hr class="hrg"></div>
+      <div class="row"><a class="btn gomodaladd">Add An Address</a></div>
+      {{if .PlistCount}}
+      <div style="padding: 24px 0 0 10px;">
+        <table id="emtab" class="emtable">
+          <tr class="head"><td><a class="btn embtn" >Email Address&nbsp;&nbsp;<span id="c1"></span></a></td><td><a class="btn dtbtn">Date Added&nbsp;&nbsp;<span id="c2"></span></a></td></tr>
+        </table>
+      </div>
+      {{else}}
     <div><p>You do not currently have a private email BlackList.</p></div>
-{{end}}
-  </div>    
+    {{end}}
+    </div>
+  </div>        
 </div>
 <div id="modaladd" class="modal">
   <div class="gridwrap">

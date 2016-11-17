@@ -7,6 +7,7 @@ import "blacklistme/controller/ulist"
 import "blacklistme/controller/dlist"
 import "blacklistme/controller/account"
 import "blacklistme/controller/support"
+import "blacklistme/controller/services"
 import "blacklistme/controller/api"
 import "os"
 import "fmt"
@@ -41,11 +42,13 @@ func Dispatch(q *q29.ReqRsp) {
 		case "inquire":        blist.Inquire(q)
 		case "addrem":         blist.AddRem(q)
 		case "complete":       blist.Complete(q)
-		case "dump":           blist.Dump(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
 
+	case "services":
+		services.Index(q)
+		
 	case "ulist":
 		if !ulist.BeforeFilter(q) { return }
 		switch (q.Action) {

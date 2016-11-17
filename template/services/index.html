@@ -1,0 +1,88 @@
+{{define "body"}}
+{{$page := .}}
+<script>
+$(document).ready(function() {
+   $('#infotab ul li a').click(function() {
+     $('#infotab ul li').removeClass('selected');
+     $(this).parent().addClass('selected');
+     var newTab = $(this).attr('href');
+     $('#infotab div.tabpanel').hide();
+     $(newTab).addClass('selected');
+     $(newTab).show();
+   });
+ });
+</script>
+<div id="home" class="services" style="height: 280px">
+  <div class="headline">
+    <h1>BlackListMe</h1>
+    <h2>Keep my old address out of the inbox</h2>
+  </div>
+</div>  
+<div id="infotab">
+  <div class="tablist">  
+  <span class="label">Services:</span>
+  <ul>
+    <li class="tab {{if .Tab1}}selected{{end}}"><a href="#tab1">Email BlackList</a></li>
+    <li class="tab {{if .Tab2}}selected{{end}}"><a href="#tab2">Domain BlackList</a></li>
+    <li class="tab {{if .Tab3}}selected{{end}}"><a href="#tab3">Private BlackList</a></li>
+    <li class="tab {{if .Tab4}}selected{{end}}"><a href="#tab4">API</a></li>    
+  </ul>
+  </div>
+  <div class="tabpanel selected" id="tab1">
+    <div class="headline"><h2>Email BlackList Service</h2></div>
+    <div class="gridrow">
+      <div class="griditem"><h3>What</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>How</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>Cost</h3>
+        <p></p>
+      </div>
+    </div>
+  </div>
+  <div class="tabpanel" id="tab2">
+    <div class="headline"><h2>Domain BlackList Service</h2></div>
+    <div class="gridrow">
+      <div class="griditem"><h3>What</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>How</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>Cost</h3>
+        <p></p>
+      </div>
+    </div>
+  </div>
+  <div class="tabpanel" id="tab3">
+    <div class="headline"><h2>Private BlackList Service</h2></div>
+    <div class="gridrow">
+      <div class="griditem"><h3>What</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>How</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>Cost</h3>
+        <p></p>
+      </div>
+    </div>
+  </div>
+  <div class="tabpanel" id="tab4">
+    <div class="headline"><h2>API</h2></div>    
+    <div class="gridrow">
+      <div class="griditem"><h3>What</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>How</h3>
+        <p></p>
+      </div>
+      <div class="griditem"><h3>Cost</h3>
+        <p></p>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
