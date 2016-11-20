@@ -10,6 +10,7 @@ func Index(q *q29.ReqRsp) {
 		Tab2 bool
 		Tab3 bool
 		Tab4 bool
+		Tab5 bool
 	}
 	switch (q.Action) {
 	default: fallthrough
@@ -17,6 +18,7 @@ func Index(q *q29.ReqRsp) {
 	case "domainblacklist": page.Tab2 = true
 	case "privateblacklist": page.Tab3 = true
 	case "api": page.Tab4 = true
+	case "pricing": page.Tab5 = true		
 	}
 	page.Vw.Template = "services/index"
 	q29.Render(q, &page)

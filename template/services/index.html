@@ -25,63 +25,62 @@ $(document).ready(function() {
     <li class="tab {{if .Tab1}}selected{{end}}"><a href="#tab1">Email BlackList</a></li>
     <li class="tab {{if .Tab2}}selected{{end}}"><a href="#tab2">Domain BlackList</a></li>
     <li class="tab {{if .Tab3}}selected{{end}}"><a href="#tab3">Private BlackList</a></li>
-    <li class="tab {{if .Tab4}}selected{{end}}"><a href="#tab4">API</a></li>    
+    <li class="tab {{if .Tab4}}selected{{end}}"><a href="#tab4">API</a></li>
+    <li class="tab {{if .Tab5}}selected{{end}}"><a href="#tab5">Pricing</a></li> 
   </ul>
   </div>
-  <div class="tabpanel selected" id="tab1">
-    <div class="headline"><h2>Email BlackList Service</h2></div>
-    <div class="gridrow">
-      <div class="griditem"><h3>What</h3>
-        <p>Input your old email address and allow us to tell other legitimate email services that it is no longer valid.  You are performing a service to others, helping them identify spam.</p>
-      </div>
-      <div class="griditem"><h3>How</h3>
-        <p>Use our home page to enter the address. We will send you an email with a confirmation URL.  Click on that URL and we take it from there. If it is used in future email, it can be considered spam.</p>
-      </div>
-      <div class="griditem"><h3>Cost</h3>
-        <p>There is no charge for retiring an email address.  This is a free service.</p>
-      </div>
+  <div class="tabpanel {{if .Tab1}}selected{{end}}" id="tab1">
+    <div class="gridbox">
+      <ul>
+        <li>BlackListMe maintains a database of retired email addresses</li>
+        <li>BlackListMe maintains a database of known spammer email addresses</li>        
+        <li>Anyone may add or remove an address from this list at any time with confirmation</li>
+        <li>Email servers and services may query our database to improve their spam filtering</li>
+      </ul>
     </div>
   </div>
-  <div class="tabpanel" id="tab2">
-    <div class="headline"><h2>Domain BlackList Service</h2></div>
-    <div class="gridrow">
-      <div class="griditem"><h3>What</h3>
-        <p></p>
-      </div>
-      <div class="griditem"><h3>How</h3>
-        <p></p>
-      </div>
-      <div class="griditem"><h3>Cost</h3>
-        <p></p>
-      </div>
+  <div class="tabpanel {{if .Tab2}}selected{{end}}" id="tab2">
+    <div class="gridbox">
+      <ul>
+        <li>BlackListMe maintains a database of retired email addresses</li>
+        <li style="background-color: #fff;">Verified domain owners may add and remove addresses in the database</li>
+        <li style="background-color: #fff;">Use this to keep ex-employee email addresses from becoming spam sources</li>
+        <li>Email servers and services will query our database to improve their spam filtering</li>
+      </ul>
     </div>
   </div>
-  <div class="tabpanel" id="tab3">
-    <div class="headline"><h2>Private BlackList Service</h2></div>
-    <div class="gridrow">
-      <div class="griditem"><h3>What</h3>
-        <p>If you manage an email server and consistently see certain FROM addresses arriving as spam, then a private list allows you to simplify your spam identification.</p>
-      </div>
-      <div class="griditem"><h3>How</h3>
-        <p>Register for an account with BlackListMe and start adding icky addresses right away.  It is your private list.  These addresses will not be shared with any other BlackListMe users.</p>
-      </div>
-      <div class="griditem"><h3>Cost</h3>
-        <p>There is no charge for creating a list of spammy FROM addresses.</p>
-      </div>
+  <div class="tabpanel {{if .Tab3}}selected{{end}}" id="tab3">
+    <div class="gridbox">
+      <ul>
+        <li>BlackListMe maintains a database of spammy email addresses</li>
+        <li style="background-color: #fff;">Registered account users may add unverified addresses to a private list</li>
+        <li style="background-color: #fff;">Use this list to help filter spam from sources you do not control</li>
+        <li>Your Email servers will query our database and can filter based on private and public blacklists</li>
+      </ul>
     </div>
   </div>
-  <div class="tabpanel" id="tab4">
-    <div class="headline"><h2>API</h2></div>    
-    <div class="gridrow">
-      <div class="griditem"><h3>What</h3>
-        <p></p>
-      </div>
-      <div class="griditem"><h3>How</h3>
-        <p></p>
-      </div>
-      <div class="griditem"><h3>Cost</h3>
-        <p></p>
-      </div>
+  <div class="tabpanel {{if .Tab4}}selected{{end}}" id="tab4">
+    <div class="gridbox">
+      <ul>
+        <li>BlackListMe maintains a database of spammy email addresses</li>
+        <li>Email servers may query our database with a REST API</li>
+        <li>A SpamAssassin plug-in is available</li>
+        <li>Developers are free to use the API to enhance their own spam filtering systems</li>
+        <li>Documentation for our API can be found here: <a href="{{.Vw.Base}}docs/api">REST API</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tabpanel {{if .Tab5}}selected{{end}}" id="tab5">
+    <div class="gridbox">
+      <ul>
+        <li>BlackListMe is a non-profit organization</li>
+        <li>We ask for payment to keep this service running based upon the number of end users in your organization</li>
+        <li>There is a 30 day free trial period</li>
+      </ul>
+      <table style="margin-left: 40px;">
+        <tr><td>Users</td><td>10</td><td>100</td><td>1000</td><td>10000</td><td>100000</td></tr>
+        <tr><td>1 Year of API Query Service</td><td>$24</td><td>$240</td><td>$2,400</td><td>$24,000</td><td>$240,000</td></tr>
+      </table>
     </div>
   </div>
 </div>
