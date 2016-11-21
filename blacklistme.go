@@ -42,6 +42,7 @@ func Dispatch(q *q29.ReqRsp) {
 		case "inquire":        blist.Inquire(q)
 		case "addrem":         blist.AddRem(q)
 		case "complete":       blist.Complete(q)
+		case "upload":         blist.Upload(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

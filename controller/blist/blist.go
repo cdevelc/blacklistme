@@ -3,7 +3,6 @@ package blist
 import "net/http"
 import "strings"
 import "q29"
-import "q29/user"
 import "q29/validfield"
 import "blacklistme/model/emaddr"
 import "github.com/mailgo"
@@ -118,13 +117,13 @@ func Complete(q *q29.ReqRsp) {
 	q29.Render(q, &page)
 }
 
-func Dump(q *q29.ReqRsp) {
+func Upload(q *q29.ReqRsp) {
 	var page struct {
-		Em []emaddr.Emaddr
-		Us []user.User
 		Vw q29.View
 	}
-	emaddr.List(q.M, "blacklist", &page.Em)
-	user.List(q.M, &page.Us)
+
+	if q.R.Method == "POST" {
+		q.R.ParseMultipartForm(256*1024)
+	}
 	q29.Render(q, &page)
 }

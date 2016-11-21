@@ -29,9 +29,10 @@ func Upsert(m *mgo.Session, ap *Apikey) bool {
 	ap.Created = time.Now().Format("2006-01-02 15:04:05")
 	str := ap.Created + fmt.Sprintf("%x",[]byte(ap.UserId))
 	ap.APIkey = fmt.Sprintf("%x", sha256.Sum256([]byte(str)))
-	changeInfo,err := m.DB("").C(collection).Upsert(selector, ap)
+	_,err := m.DB("").C(collection).Upsert(selector, ap)
 	if err == nil {
-		if ap.Id == "" { ap.Id = changeInfo.UpsertedId.(bson.ObjectId) }
+		//		if ap.Id == "" { ap.Id = changeInfo.UpsertedId.(bson.ObjectId) }
+		// failing on new mongo for some reason
 		return true
 	}
 	log.Printf("%s Upsert: %s\n", collection, err)
