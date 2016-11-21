@@ -1,0 +1,16 @@
+{{define "body"}}
+{{$page := .}}
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}blist">BlackList</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <a href="{{.Vw.Base}}blist">Email Address</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Upload</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <h2>Upload Spam Email Sender Addresses</h2>
+  <form action="{{.Vw.Base}}blist/upload" enctype="multipart/form-data" method="POST">
+    <input name="emfile" type="file">
+    <button type="submit">Upload</button>
+  </form>
+</div>
+{{end}}
