@@ -20,6 +20,17 @@ func List(m *mgo.Session, collection string, em *[]Emaddr) {
 	m.DB("").C(collection).Find(nil).Sort("email").All(em)
 }
 
+func ListByUid(m *mgo.Session, collection string, uid bson.ObjectId, em *[]Emaddr) {
+	m.DB("").C(collection).Find(bson.M{"userid": uid}).All(em)
+}
+func ListByUidCount(m *mgo.Session, collection string, uid bson.ObjectId) int {
+	cnt, _ := m.DB("").C(collection).Find(bson.M{"userid": uid}).Count()
+	return cnt
+}
+func ListByDid(m *mgo.Session, collection string, did bson.ObjectId, em *[]Emaddr) {
+	m.DB("").C(collection).Find(bson.M{"domainid": did}).All(em)
+}
+
 func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
   var selector bson.M 
 
@@ -48,6 +59,23 @@ func Delete(m *mgo.Session, collection string, id bson.ObjectId) bool {
 	return false
 }
 
+func DeleteByEmail(m *mgo.Session, collection string, e string) bool {
+	if e != "" {
+		err := m.DB("").C(collection).Remove(bson.M{"email": e})
+		if err == nil { return true }
+		log.Printf("%s DeleteByEmail: %s\n", collection, err)
+	}
+	return false
+}
+func DeleteByDomainId(m *mgo.Session, collection string, did bson.ObjectId) bool {
+	if did != "" {
+		_,err := m.DB("").C(collection).RemoveAll(bson.M{"domainid": did})
+		if err == nil { return true }
+		log.Printf("%s DeleteAllDid: %s\n", collection, err)
+	}
+	return false
+}
+
 func Find(m *mgo.Session, collection string, e string, em *Emaddr) bool {
 	err := m.DB("").C(collection).Find(bson.M{"email": e}).One(em)
 	if err == nil { return true }
@@ -59,6 +87,23 @@ func Find(m *mgo.Session, collection string, e string, em *Emaddr) bool {
 
 func FindBySig(m *mgo.Session, collection string, sig string, em *Emaddr) bool {
 	err := m.DB("").C(collection).Find(bson.M{"sha256": sig}).One(em)
+	if err == nil { return true }
+	if err.Error() != "not found" {
+		log.Printf("%s Find: %s\n", collection, err)
+	}
+	return false
+}
+
+func FindByUid(m *mgo.Session, collection string, uid bson.ObjectId, emaddr string, em *Emaddr) bool {
+	err := m.DB("").C(collection).Find(bson.M{"userid": uid, "email": emaddr}).One(em)
+	if err == nil { return true }
+	if err.Error() != "not found" {
+		log.Printf("%s Find: %s\n", collection, err)
+	}
+	return false
+}
+func FindByDid(m *mgo.Session, collection string, did bson.ObjectId, emaddr string, em *Emaddr) bool {
+	err := m.DB("").C(collection).Find(bson.M{"domainid": did, "email": emaddr}).One(em)
 	if err == nil { return true }
 	if err.Error() != "not found" {
 		log.Printf("%s Find: %s\n", collection, err)

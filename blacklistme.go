@@ -4,8 +4,10 @@ import "net/http"
 import "q29"
 import "blacklistme/controller/blist"
 import "blacklistme/controller/ulist"
+import "blacklistme/controller/dlist"
 import "blacklistme/controller/account"
 import "blacklistme/controller/support"
+import "blacklistme/controller/services"
 import "blacklistme/controller/api"
 import "os"
 import "fmt"
@@ -13,8 +15,7 @@ import	"github.com/golang/glog"
 import "flag"
 
 func Init() {
-	//q29.AddSite("blacklistme","blacklistme", "localhost:27017/blacklistme", Dispatch)
-
+	q29.AddSite("blacklistme","blacklistme", "localhost:27017/blacklistme", Dispatch)
 }
 func init() {
 	glog.Info("Gratuitious message to allow me to import the glog pkg first \n");
@@ -41,11 +42,13 @@ func Dispatch(q *q29.ReqRsp) {
 		case "inquire":        blist.Inquire(q)
 		case "addrem":         blist.AddRem(q)
 		case "complete":       blist.Complete(q)
-		case "dump":           blist.Dump(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
 
+	case "services":
+		services.Index(q)
+		
 	case "ulist":
 		if !ulist.BeforeFilter(q) { return }
 		switch (q.Action) {
@@ -56,7 +59,21 @@ func Dispatch(q *q29.ReqRsp) {
 		case "apikeyregen":    ulist.ApikeyRegen(q)
 		case "plist":          ulist.Plist(q)
 		case "plistadd":       ulist.PlistAdd(q)
-		case "plistdel":       ulist.PlistDel(q)			
+		case "plistdel":       ulist.PlistDel(q)
+		default:
+			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
+		}
+
+	case "dlist":
+		if !dlist.BeforeFilter(q) { return }
+		switch (q.Action) {
+		case "index":          dlist.Index(q)
+		case "add":            dlist.Add(q)
+		case "addconfirm":     dlist.AddConfirm(q)			
+		case "del":            dlist.Del(q)
+		case "elist":          dlist.Elist(q)
+		case "elistadd":       dlist.ElistAdd(q)
+		case "elistdel":       dlist.ElistDel(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
@@ -89,6 +106,7 @@ func Dispatch(q *q29.ReqRsp) {
 		if !support.BeforeFilter(q) { return }
 		switch (q.Action) {
 		case "faq":          support.FAQ(q)
+		case "status":       support.Status(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

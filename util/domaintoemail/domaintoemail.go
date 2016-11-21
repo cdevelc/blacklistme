@@ -1,7 +1,7 @@
 // domaintoemail takes a domain (xyz.com) and returns the email address of the Tech contact
 // it returns an error if whois is unable to find the domain, or the result does not have a "Tech Email:" entry
 // usage:
-//    out, err := domaintoemail.get("domain.com")
+//    out, err := domaintoemail.Get("domain.com")
 //
 package domaintoemail
 import (
@@ -11,7 +11,7 @@ import (
 	"github.com/golang/glog"
 )
 
-func get(domain string) (string,error) {
+func Get(domain string) (string,error) {
 	out, err := exec.Command("/usr/bin/whois", domain).Output() 
 	if err != nil { 
 		msg := fmt.Sprintf("domaintoemail:  error executing whois command with domain=%s, returned error= %v\n", domain, err)

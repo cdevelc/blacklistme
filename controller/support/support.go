@@ -12,3 +12,10 @@ func FAQ(q *q29.ReqRsp) {
 	}
 	q29.Render(q, &page)		
 }
+
+func Status(q *q29.ReqRsp) {
+	var page struct {
+		Vw q29.View
+	}
+	q29.Render(q, &page)		
+}

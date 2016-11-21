@@ -12,19 +12,22 @@ type TemplateVars struct {
 	Av validate.AccessVars
 }
 
-func verify_user_create_session_and_redirect(q *q29.ReqRsp, uname string, pword string, uri string) (error bool) {
+func verify_user_create_session_and_redirect(q *q29.ReqRsp, uname string, pword string, uri string) (error int) {
 	var u *user.User
 	u = user.FindByUname(q.M, uname)
 	if u != nil {
+		if u.Confirmed == false {
+			return 2
+		}
 		encpw := session.EncryptPassword(pword, u.Passsalt)
 		if encpw == u.Password {
 			session.Create(q.M, q.W, q.Base, u.Username, u.Email)
 			user.StampLogin(q.M, u)
 			q29.Redirect(q, uri)
-			return false
+			return 0
 		}
 	}
-	return true
+	return 1
 }
 
 func BeforeFilter(q *q29.ReqRsp) bool {
@@ -38,13 +41,20 @@ func Login(q *q29.ReqRsp) {
 		validate.Login(q, &templateVars.Av)
 		if templateVars.Av.Error.Count == 0 {
 			err := verify_user_create_session_and_redirect(q, templateVars.Av.Username, templateVars.Av.Password, "ulist/dashboard")
-			if err == false {
+			if err == 0 {
 				return
 			}
-			templateVars.Av.Password = ""
-			templateVars.Av.ErrorLabel.Password = "incorrect"			
-			templateVars.Av.Error.Password = "Sorry, that password was incorrect"
-			templateVars.Av.Error.Count++
+			if err == 1 {
+				templateVars.Av.Password = ""
+				templateVars.Av.ErrorLabel.Password = "incorrect"			
+				templateVars.Av.Error.Password = "Sorry, that password was incorrect"
+				templateVars.Av.Error.Count++
+			} else {
+				templateVars.Av.Password = ""
+				templateVars.Av.ErrorLabel.Username = "pending"			
+				templateVars.Av.Error.Username = "This account is awaitng email confirmation"
+				templateVars.Av.Error.Count++
+			}
 		}
 	}
 	if templateVars.Av.StateToken == "" {

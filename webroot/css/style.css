@@ -330,6 +330,9 @@ a {
  height: 380px;
  border-bottom: 1px solid #d6d6d6;
 }
+#home .services {
+ height: 280px;    
+}
 #home:after {
  content: "";
  display: block;
@@ -539,6 +542,34 @@ fieldset {
  display: table-cell;
  background: #f2f2f2;
  border-radius: 8px;
+}
+
+#infotab .gridbox {
+ margin: 0 auto;
+ padding: 1.5em 2.0em 1.5em 2.0em;
+ width: 76%;
+ background: #f2f2f2;
+ border-radius: 8px;
+ display: block;
+ text-align: left;
+}
+
+#infotab .gridbox li {
+ padding: .6em .5em;
+}
+#infotab .gridbox table {    
+ border: 2px solid #3b9712;
+ border-collapse: collapse;
+}
+#infotab .gridbox td {
+ margin: 0;
+ padding: .5em;
+ text-align: right;
+ border: 1px solid #3b9712;
+}
+#infotab .gridbox a {
+ color: #6d6e70;
+ text-decoration: underline;
 }
 
 #infotab .griditem h3 {
