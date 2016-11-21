@@ -5,7 +5,7 @@ import "q29/session"
 import "q29/user"
 import "blacklistme/controller/account/validate"
 import "blacklistme/model/apikey"
-import "github.com/mailgo"
+import "blacklistme/util/mailgo"
 
 type TemplateVars struct {
 	Vw q29.View
