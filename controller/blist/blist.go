@@ -5,7 +5,7 @@ import "strings"
 import "q29"
 import "q29/validfield"
 import "blacklistme/model/emaddr"
-import "github.com/mailgo"
+import "blacklistme/util/mailgo"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	return true

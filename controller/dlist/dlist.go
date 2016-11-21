@@ -10,7 +10,7 @@ import "q29/session"
 import "blacklistme/model/domain"
 import "blacklistme/model/emaddr"
 import "blacklistme/util/domaintoemail"
-import "github.com/mailgo"
+import "blacklistme/util/mailgo"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	if q.U == nil && q.Action == "addconfirm" { return true } //allow Domain Confirm without login
