@@ -2,10 +2,13 @@ package blist
 
 import "net/http"
 import "strings"
+import "strconv"
 import "q29"
 import "q29/validfield"
 import "blacklistme/model/emaddr"
 import "blacklistme/util/mailgo"
+import "bytes"
+import "io"
 
 func BeforeFilter(q *q29.ReqRsp) bool {
 	return true
@@ -121,9 +124,35 @@ func Upload(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View
 	}
-
+	var emAddr  emaddr.Emaddr
+	
 	if q.R.Method == "POST" {
 		q.R.ParseMultipartForm(256*1024)
+		f, _, err := q.R.FormFile("emfile")
+		if err != nil {
+			page.Vw.FlashMsg = "emfile upload error: "+err.Error()
+		} else {
+			var b bytes.Buffer
+			_, err = io.Copy(&b, f)
+			if err != nil {
+				page.Vw.FlashMsg = "emfile upload copy error: "+err.Error()
+			} else {
+				page.Vw.FlashMsg = "emfile upload complete"
+				addrs := strings.Split(b.String(),"\n")
+				page.Vw.FlashMsg = "emfile upload complete, "+strconv.Itoa(len(addrs))+" spammy email addresses processed"
+				for i:=0; i<len(addrs); i = i + 1 {
+					em := strings.TrimSpace(addrs[i])
+					if len(em) > 0 {
+						found := emaddr.Find(q.M, "blacklist", em, &emAddr)
+						if found == false {
+							emAddr.Id = ""
+							emAddr.Email = em
+							emaddr.Upsert(q.M, "blacklist", &emAddr);									
+						}
+					}					
+				}				
+			}
+		}
 	}
 	q29.Render(q, &page)
 }

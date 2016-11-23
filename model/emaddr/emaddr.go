@@ -3,6 +3,7 @@ package emaddr
 import "log"
 import "fmt"
 import "time"
+import "strings"
 import "crypto/sha256"
 import "gopkg.in/mgo.v2"
 import "gopkg.in/mgo.v2/bson"
@@ -34,6 +35,7 @@ func ListByDid(m *mgo.Session, collection string, did bson.ObjectId, em *[]Emadd
 func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
   var selector bson.M 
 
+	em.Email = strings.ToLower(em.Email)
 	if em.Id == "" { //new email addr, first insertion
 		selector = bson.M{"_id": nil}
 		em.Created = time.Now().Format("2006-01-02 15:04:05")		
@@ -41,6 +43,7 @@ func Upsert(m *mgo.Session, collection string, em *Emaddr) bool {
 	} else {
 		selector = bson.M{"_id": em.Id}	
 	}
+
 	changeInfo,err := m.DB("").C(collection).Upsert(selector, em)
 	if err == nil {
 		if em.Id == "" { em.Id = changeInfo.UpsertedId.(bson.ObjectId) }
@@ -60,6 +63,7 @@ func Delete(m *mgo.Session, collection string, id bson.ObjectId) bool {
 }
 
 func DeleteByEmail(m *mgo.Session, collection string, e string) bool {
+	e = strings.ToLower(e)	
 	if e != "" {
 		err := m.DB("").C(collection).Remove(bson.M{"email": e})
 		if err == nil { return true }
@@ -77,6 +81,7 @@ func DeleteByDomainId(m *mgo.Session, collection string, did bson.ObjectId) bool
 }
 
 func Find(m *mgo.Session, collection string, e string, em *Emaddr) bool {
+	em.Email = strings.ToLower(em.Email)
 	err := m.DB("").C(collection).Find(bson.M{"email": e}).One(em)
 	if err == nil { return true }
 	if err.Error() != "not found" {
