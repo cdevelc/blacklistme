@@ -9,7 +9,8 @@ var erro = {
  email:       { str: '', lab: '' },
  firstname:   { str: '', lab: '' },
  lastname:    { str: '', lab: '' },
- domain:      { str: '', lab: '' }
+ domain:      { str: '', lab: '' },
+ tos:         { str: '', lab: '' }
 };
 function erroSet(k, s, l) {
  erro_count++;    
@@ -18,7 +19,7 @@ function erroSet(k, s, l) {
 }
 
 var formfields = {
- register:   ['username', 'email', 'password', 'passagain', 'firstname', 'lastname'],
+ register:   ['username', 'email', 'password', 'passagain', 'firstname', 'lastname', 'tos'],
  cpassword:  ['password', 'passagain', 'oldpassword'],
  cemail:     ['email', 'password'],
  cname:      ['firstname', 'lastname', 'password'],
@@ -43,6 +44,7 @@ function validateForm(fname) {
   case 'firstname': validate_humanname( key, val, "First"); break;
   case 'lastname': validate_humanname( key, val, "Last"); break;
   case 'domain': validate_domainname( key, val); break;
+  case 'tos': validate_tos( key, document.forms[fname][key].checked); break;
   default: return false; break;
   }
   document.getElementById(key+".error").innerHTML = erro[key].str;
@@ -123,6 +125,12 @@ function validate_passagain(k, pw, pa) {
   erroSet(k, "", "required");
  else if (pw != pa)
   erroSet(k, "The 2 passwords do not match", "mismatch");
+}
+
+function validate_tos( k, v) {
+ if (v == false) {
+  erroSet(k,"Please read and agree to our Terms of Service","");
+ }
 }
 
 function vernam_encipher(p,k) {

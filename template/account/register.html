@@ -49,7 +49,12 @@
         <span id="email.errlabel" class="errlabel">{{.Av.ErrorLabel.Email}}</span>        
       </li>
       <li class="fielderror" id="email.error">{{.Av.Error.Email}}</li>
-      <li>By creating an account, you agree to our <a href="#">Terms of Service</a></li>
+      <li>
+        <label>Terms of Service</label>
+        <input name="tos" type="checkbox" style="vertical-align:sub;width: 20px;">&nbsp;I agree to the BlackListMe&nbsp;<a onclick="return tosmodalon();">Terms of Service</a>
+        <span id="tos.errlabel" class="errlabel"></span>        
+      </li>
+      <li class="fielderror" id="tos.error"></li>      
       <li class="center"><button type="submit">Create Account</button></li>
     </ul>
     </form>
@@ -61,10 +66,32 @@ $(document).ready(function() {
     $('#groundy').css({top: 0, left: cyc+'0%', position: 'absolute'});
     if (++cyc==10) { cyc=0; }
   });
-});
+ 
+ });
+function tosmodalon() {
+   document.getElementById("tosmodal").style.display = "block";
+   return false;
+}
+function tosmodaloff() {
+   document.getElementById("tosmodal").style.display = "none";
+   return false;
+}
 </script>
 <div style="position: relative;">
   <img id="groundy" style="float: left; position: absolute; top: 0; left: 5%;height: 125px; width: 125px;" src="{{$page.Vw.Base}}img/groundh2.png" >    
 </div>
 </div>
+<div id="tosmodal" class="modal">
+  <div class="gridwrap">
+    <div class="acct">
+      <h3>BlackListMe Terms of Service<span class="right"><a onclick="return tosmodaloff();">X</a></span></h3>
+      <div style="padding: 0 20px 20px 20px;">
+        <p>BlackListMe endeavors to provide an accurate and reliable service. This service may not be accurate. This service may not be reliable.</p>
+        <div style="float: right;"><a onclick="return tosmodaloff();">Done</a></div>
+        <br>
+      </div>
+    </div>
+  </div>    
+</div>
+
 {{end}}
