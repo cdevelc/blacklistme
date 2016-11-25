@@ -106,7 +106,7 @@ func Del(q *q29.ReqRsp) {
 		found := domain.Find(q.M, domname, &dm)
 		if found == true && dm.UserId == q.U.Id {
 			emaddr.DeleteByDomainId(q.M, "domainaddrs", dm.Id)
-			//!!! need code here to delete email addresses in the MAIN blacklist !!!
+			emaddr.DeleteByDomainId(q.M, "blacklist", dm.Id)
 			domain.Delete(q.M, dm.Id)
 		}
 	}
