@@ -40,7 +40,7 @@ func sendEmailToDomainContact(dom string, vos string, q *q29.ReqRsp) {
 			URL: "http://"+q.R.Host+q29.AssetURL(q, "dlist/addconfirm?vos="+vos),
 		}
 		log.Printf("emurl = %s", s.URL)
-		//mailgo.ConfirmDomain(&s)
+		mailgo.ConfirmDomainControlEmail(&s)
 	}	
 }
 
@@ -106,7 +106,7 @@ func Del(q *q29.ReqRsp) {
 		found := domain.Find(q.M, domname, &dm)
 		if found == true && dm.UserId == q.U.Id {
 			emaddr.DeleteByDomainId(q.M, "domainaddrs", dm.Id)
-			//!!! need code here to delete email addresses in the MAIN blacklist !!!
+			emaddr.DeleteByDomainId(q.M, "blacklist", dm.Id)
 			domain.Delete(q.M, dm.Id)
 		}
 	}
@@ -158,8 +158,9 @@ func ElistAdd(q *q29.ReqRsp) {
 			emAddr.UserId = q.U.Id
 			emAddr.DomainId = dm.Id
 			emaddr.Upsert(q.M, "domainaddrs", &emAddr)
+			emAddr.Id = ""			
+			emaddr.Upsert(q.M, "blacklist", &emAddr)
 		}
-		//!!! need code here to add address to main blacklist (sha256)
 		q29.SetFlash(q, "The email address "+email+" has been added to this Domain BlackList.")
 	}
 	q29.Redirect(q, "dlist/elist?dname="+dname)
@@ -186,6 +187,10 @@ func ElistDel(q *q29.ReqRsp) {
 		} else {
 			emaddr.Delete(q.M, "domainaddrs", emAddr.Id)
 			q29.SetFlash(q, "The email address "+email+" has been removed from this Domain BlackList.")		
+		}
+		found = emaddr.Find(q.M, "blacklist", email, &emAddr)
+		if found == true {
+			emaddr.Delete(q.M, "blacklist", emAddr.Id)
 		}		
 	}
 	q29.Redirect(q, "dlist/elist?dname="+dname)

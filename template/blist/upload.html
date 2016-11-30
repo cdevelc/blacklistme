@@ -7,10 +7,13 @@
   </p>
 </nav>
 <div class="gridwrap">
+  {{if .Vw.FlashMsg}}<div id="flash">{{.Vw.FlashMsg}}</div>{{end}}
   <h2>Upload Spam Email Sender Addresses</h2>
-  <form action="{{.Vw.Base}}blist/upload" enctype="multipart/form-data" method="POST">
-    <input name="emfile" type="file">
-    <button type="submit">Upload</button>
-  </form>
+  <div class="theemailcrud">
+    <form action="{{.Vw.Base}}blist/upload" enctype="multipart/form-data" method="POST">
+      <input name="emfile" type="file">
+      <button type="submit">Upload</button>
+    </form>
+  </div>
 </div>
 {{end}}
