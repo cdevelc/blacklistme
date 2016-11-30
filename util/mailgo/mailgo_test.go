@@ -65,5 +65,27 @@ func TestConfirmDomainControlEmail(t *testing.T) {
 	}
 }
 
+func TestUsernameReminderEmail(t *testing.T) {
+	s := Session {Email: "gladwig@gladworx.com", 
+		Domain: "gladworx.com", Fname: "Frank", Lname:"Ziffle", URL:"http://BlackListme/Confirm",
+		Username: "FrankZiffle", Password:"FranksNewPassword"}
+	//fmt.Printf("(%v, %T)\n", s, s)
+	err := UsernameReminderEmail(&s)
+	if err != nil {
+		t.Errorf("UsernameReminderEmail Failed\n")
+	}
+}
+
+func TestPasswordResetEmail(t *testing.T) {
+	s := Session {Email: "gladwig@gladworx.com", 
+		Domain: "gladworx.com", Fname: "Frank", Lname:"Ziffle", URL:"http://BlackListme/Confirm",
+		Username: "FrankZiffle", Password:"FranksNewPassword"}
+	//fmt.Printf("(%v, %T)\n", s, s)
+	err := PasswordResetEmail(&s)
+	if err != nil {
+		t.Errorf("PasswordResetEmail Failed\n")
+	}
+}
+
 
 

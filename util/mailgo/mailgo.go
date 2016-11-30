@@ -21,6 +21,8 @@ type Session struct  {
 	Lname string
 	Email string
 	Domain string
+	Username string
+	Password string
 	URL string
 	subject string
 	message string
@@ -138,6 +140,7 @@ func NotifyPasswordChange( ses *Session) (error){
            The BlackListMe Team`)
 	return(sendreq(ses))
 }
+
 //ConfirmDomainControlEmail sends an email to confirm a non-account based user blacklist request
 func ConfirmDomainControlEmail(ses *Session)(error) {
 	ses.subject = "BlackListMe domain control email address confirmation"
@@ -151,6 +154,36 @@ func ConfirmDomainControlEmail(ses *Session)(error) {
         ---------------------------------------------------------------------------------- 
         You are receiving this email because you recently requested control of a Domain 
         at BlackListMe.net. If this wasn't you, please ignore this email` , ses.Domain, ses.URL)
+	return(sendreq(ses))
+}
+
+//UsernameReminderEmail sends an email when a user has forgotten their user name
+func UsernameReminderEmail(ses *Session)(error) {
+	ses.subject = "BlackListMe Username Reminder"
+	ses.message = fmt.Sprintf(`Greetings from BlackListMe 
+        Your username is %s at BlackListMe.
+ 
+        Regards,
+ 
+          The BlackListMe Team
+        ---------------------------------------------------------------------------------- 
+        You are receiving this email because you recently requested a reminder of your username 
+        at BlackListMe.net. If this wasn't you, please ignore this email` , ses.Username)
+	return(sendreq(ses))
+}
+
+//PasswordResetEmail sends an email when a user has forgotten their password
+func PasswordResetEmail(ses *Session)(error) {
+	ses.subject = "BlackListMe Password Reset"
+	ses.message = fmt.Sprintf(`Greetings from BlackListMe 
+        Your password has been reset to %s at BlackListMe.
+ 
+        Regards,
+ 
+          The BlackListMe Team
+        ---------------------------------------------------------------------------------- 
+        You are receiving this email because you recently requested that your password be reset
+        at BlackListMe.net. If this wasn't you, please ignore this email` , ses.Password)
 	return(sendreq(ses))
 }
 
