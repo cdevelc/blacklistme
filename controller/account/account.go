@@ -6,10 +6,14 @@ import "q29/user"
 import "blacklistme/controller/account/validate"
 import "blacklistme/model/apikey"
 import "blacklistme/util/mailgo"
+import "fmt"
+import "math/rand"
 
 type TemplateVars struct {
 	Vw q29.View
 	Av validate.AccessVars
+	RdoUsername string
+	RdoEmail string
 }
 
 func verify_user_create_session_and_redirect(q *q29.ReqRsp, uname string, pword string, uri string) (error int) {
@@ -227,9 +231,59 @@ func Rename(q *q29.ReqRsp) {
 	q29.Render(q, &templateVars)		
 }
 
+func randletter(length int) string {
+	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZa"
+	var result string
+	for i:=0; i<length; i++ {		
+		result = result + fmt.Sprintf("%c", letterBytes[rand.Intn(52)])
+	}
+	return result
+}
+
 func Forgot(q *q29.ReqRsp) {
+	var templateVars TemplateVars
+
+	templateVars.RdoUsername = "checked"
+	templateVars.RdoEmail = ""
+	if q.R.Method == "POST" {
+		validate.Forgot(q, &templateVars.Av)
+		if templateVars.Av.Error.Count == 0 {
+
+			if templateVars.Av.Radio1 == "email" {
+				s := mailgo.Session {
+					Email: templateVars.Av.Email,
+					Username: templateVars.Av.Username,
+				}
+				mailgo.UsernameReminderEmail(&s)
+				
+			} else { //username argument provided, reset user password
+				u := user.FindByUname(q.M, templateVars.Av.Username)
+				if u != nil {
+
+					pw := "Bm2017"+randletter(4)
+					u.Password = session.EncryptPassword(pw, u.Passsalt)
+					user.Update(q.M, u)			
+					s := mailgo.Session {
+						Email: u.Email,
+						Username: templateVars.Av.Username,
+						Password: pw,
+					}
+					mailgo.PasswordResetEmail(&s)
+				}
+			}			
+			q29.Redirect(q, "account/recovery")
+			return
+		}
+		if templateVars.Av.ErrorLabel.Email != "" {
+			templateVars.RdoUsername = ""
+			templateVars.RdoEmail = "checked"
+		}
+	}
+	q29.Render(q, &templateVars)		
+}
+func Recovery(q *q29.ReqRsp) {
 	var page struct {
 		Vw q29.View
 	}
-	q29.Render(q, &page)		
+	q29.Render(q, &page)
 }

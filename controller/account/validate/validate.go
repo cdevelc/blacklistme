@@ -15,6 +15,7 @@ type AccessVars struct {
 	Firstname  string
 	Lastname   string
 	StateToken string
+	Radio1     string
 	Error struct {
 		Count     int
 		Username  string
@@ -97,6 +98,7 @@ func initAVs(q *q29.ReqRsp, av *AccessVars) {
 	av.Oldpassword = q.R.FormValue("oldpassword")	
 	av.Firstname = q.R.FormValue("firstname")
 	av.Lastname = q.R.FormValue("lastname")
+	av.Radio1 = q.R.FormValue("radio1")
 	_, stateTokenPresent := q.R.Form["stateToken"]
 	if stateTokenPresent == true {
 		av.StateToken = session.RetrieveClientStateToken(q.M, q29.RemoteIP(q))
@@ -144,6 +146,36 @@ func ChangeEmail(q *q29.ReqRsp, av *AccessVars) {
 func ChangeName(q *q29.ReqRsp, av *AccessVars) {
 	initAVs(q, av)
 	vpassword(av)	
+}
+
+func Forgot(q *q29.ReqRsp, av *AccessVars) {
+	var u *user.User
+	
+	initAVs(q, av)
+	if av.Radio1 == "email" {
+		vemail(av)
+		if av.Error.Count == 0 {		
+			u = user.FindByEmail(q.M, av.Email)
+			if u == nil {
+				av.Error.Email = "Email address is unknown"
+				av.ErrorLabel.Email = "invalid"
+				av.Error.Count++
+			} else {
+				//save redundant userFind back in account-go, just fill it in here
+				av.Username = u.Username
+			}
+		}
+	} else { /* assume username */
+		vusername(av)
+		if av.Error.Count == 0 {
+			u = user.FindByUname(q.M, av.Username)
+			if u == nil {
+				av.Error.Username = "Username is unknown"
+				av.ErrorLabel.Username = "invalid"
+				av.Error.Count++
+			}
+		}
+	}
 }
 
 func Login(q *q29.ReqRsp, av *AccessVars) {

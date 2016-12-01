@@ -1,6 +1,82 @@
 {{define "body"}}
 {{$page := .}}
-<div>
-Welcome to the page you forgot.
+<nav class="breadcrumbs">
+  <p><a href="{{.Vw.Base}}">My Account</a>&nbsp;&nbsp;&#8594;&nbsp;
+    <strong>Account Recovery</strong>
+  </p>
+</nav>
+<div class="gridwrap">
+  <div class="acct">
+    <h3>Account Recovery</h3>
+    <form name="forgot" action="{{.Vw.Base}}account/forgot" method="POST" onsubmit="return validateForgot();">
+      <div style="padding-left: 16px">Please fill in one of the fields below with your account information.  Or&nbsp;<a href="{{.Vw.Base}}/support/contact">Contact Us</a>&nbsp;if you require further assistance.</div>
+      <div class="atable">
+        <div class="row">
+          <div class="cell w30"><h4>Reset My Password</h4></div>
+          <div class="cell w05"><input name="radio1" type="radio" value="username" onclick="radioToggle('table-row','none');" {{.RdoUsername}}></div>
+          <div class="cell w50"><strong>&nbsp;I know my username</strong></div>
+          <div class="cell w15">&nbsp;</div>          
+        </div>
+        <div class="row radioshow1" {{if eq .RdoUsername ""}}style="display: none;"{{end}}>
+          <div class="cell w30">&nbsp;</div>
+          <div class="cell w05">&nbsp;</div>
+          <div class="cell w50">Please enter your username.  We will reset your password and tell you about it with an email.</div>
+          <div class="cell w15">&nbsp;</div>
+        </div>
+        <div class="row radioshow1" {{if eq .RdoUsername ""}}style="display: none;"{{end}}>        
+          <div class="cell w30">&nbsp;</div>
+          <div class="cell w05">&nbsp;</div>
+          <div class="cell w50"><input name="username" type="text" maxlength="20" placeholder="Username" autocomplete="off" autocapitalize="off" autocorrect="off" value=""></div>
+          <div class="cell w15"><span id="username.errlabel" class="errlabel">{{.Av.ErrorLabel.Username}}</span></div>
+        </div>
+        <div class="row radioshow1" {{if eq .RdoUsername ""}}style="display: none;"{{end}}>
+          <div class="cell w30">&nbsp;</div>
+          <div class="cell w05">&nbsp;</div>
+          <div class="cell w50"><span class="fielderror" id="username.error">{{.Av.Error.Username}}</span></div>
+          <div class="cell w15">&nbsp;</div>
+        </div>
+        <div class="row">
+          <div class="cell w30"><h4>Username Reminder</h4></div>
+          <div class="cell w05"><input name="radio1" type="radio" value="email" onclick="radioToggle('none','table-row');" {{.RdoEmail}}></div>
+          <div class="cell w50"><strong>&nbsp;I know my email address</strong></div>
+          <div class="cell w15">&nbsp;</div>          
+        </div>
+        <div class="row radioshow2" {{if eq .RdoEmail ""}}style="display: none;"{{end}}>
+          <div class="cell w30">&nbsp;</div>
+          <div class="cell w05">&nbsp;</div>
+          <div class="cell w50">Please enter your account email address.  We will send you an email with your username.</div>
+          <div class="cell w15">&nbsp;</div>
+        </div>
+        <div class="row radioshow2" {{if eq .RdoEmail ""}}style="display: none;"{{end}}>
+          <div class="cell w30">&nbsp;</div>
+          <div class="cell w05">&nbsp;</div>
+          <div class="cell w50"><input name="email" type="text" placeholder="Email Address" autocomplete="off" autocapitalize="off" autocorrect="off" value=""></div>
+          <div class="cell w15"><span id="email.errlabel" class="errlabel">{{.Av.ErrorLabel.Email}}</span></div>
+        </div>
+        <div class="row radioshow2" {{if eq .RdoEmail ""}}style="display: none;"{{end}}>
+          <div class="cell w30">&nbsp;</div>
+          <div class="cell w05">&nbsp;</div>
+          <div class="cell w50"><span class="fielderror" id="email.error">{{.Av.Error.Email}}</span></div>
+          <div class="cell w15">&nbsp;</div>
+        </div>
+      </div>        
+      <div style="padding: 40px 0; width: 100%; text-align: center">
+        <button type="submit">Submit</button>
+      </div>        
+    </form>
+  </div>
 </div>
+<script>
+ function radioToggle(one, two) {
+   var els = document.getElementsByClassName('radioshow1');
+   for (var i=0; i<els.length; i++) {
+     els[i].style.display = one;
+   }
+   var els = document.getElementsByClassName('radioshow2');
+   for (var i=0; i<els.length; i++) {
+     els[i].style.display = two;
+   }
+ }
+</script>
+
 {{end}}

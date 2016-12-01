@@ -87,10 +87,11 @@ func Dispatch(q *q29.ReqRsp) {
 		case "register":       account.Register(q)
 		case "thanks":         account.Thanks(q)
 		case "confirm":        account.Confirm(q)
-		case "forgot":         account.Forgot(q)
 		case "password":       account.Password(q)
 		case "email":          account.Email(q)
-		case "rename":         account.Rename(q)			
+		case "rename":         account.Rename(q)
+		case "forgot":         account.Forgot(q)
+		case "recovery":       account.Recovery(q)
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}

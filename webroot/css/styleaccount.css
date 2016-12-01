@@ -29,6 +29,14 @@ div.acct {
  color: #fff;
  text-decoration: none;
 }
+.acct h4 {
+ margin: 0;
+ padding: 0;
+ font-size: 1.1em;
+ font-weight: bold;
+ text-decoration: none;
+ line-height: 1em; 
+}
 .acct ul {
  list-style-type: none;
  margin: 0;
@@ -80,7 +88,7 @@ div.acct {
 .acct button:active {
  background: linear-gradient(to bottom, #de3723 0%, #fd4f00 100%);
 }
-.acct li.fielderror {
+.acct li.fielderror, .acct span.fielderror {
  padding: .25em 0 0 0;
  margin: 0;
  padding-left: 33%;
@@ -99,3 +107,36 @@ div.acct {
 .acct a.cancel {
  padding-left: 20px;    
 }
+
+.atable {
+ width: 95%;
+ display: table;
+ margin: 0 auto;
+ padding: 20px 0 0 0;
+ font-size: .875em;
+}
+.atable .row {
+ width: 100%; 
+ display: table-row;
+}
+.atable .cell {
+ display: table-cell;
+}
+.atable .cell input {
+ margin-top: .5em;
+ width: 100%;
+}
+.atable .cell input[type="radio"] {
+ padding: 0;
+}
+.atable span.errlabel {
+ vertical-align: top;
+}
+.atable .w05 { width: 5%; }
+.atable .w10 { width: 10%; }
+.atable .w15 { width: 15%; }
+.atable .w20 { width: 20%; }
+.atable .w25 { width: 25%; }
+.atable .w30 { width: 30%; }
+.atable .w40 { width: 40%; }
+.atable .w50 { width: 50%; }

@@ -24,6 +24,7 @@ var formfields = {
  cemail:     ['email', 'password'],
  cname:      ['firstname', 'lastname', 'password'],
  login:      ['username', 'password'],
+ forgot:     ['username', 'email'],
  email:      ['email'],
  domainform: ['domain']
 };
@@ -67,6 +68,23 @@ function validateForm(fname) {
    document.forms[fname]['stateToken'].value = "";
  }
  return true;    
+}
+
+function validateForgot() {
+ erro_count = 0;
+ var keyv = document.forms['forgot']['radio1'].value;
+ if (keyv == 'username') {
+  validate_username( keyv, document.forms['forgot'][keyv].value);
+ }
+ else if (keyv == 'email') {
+  validate_email( keyv, document.forms['forgot'][keyv].value);
+ } else {
+  return false;
+ }
+ document.getElementById(keyv+".error").innerHTML = erro[keyv].str;
+ document.getElementById(keyv+".errlabel").innerHTML = erro[keyv].lab;
+ if (erro_count) { return false; }
+ return true;
 }
 
 function validate_username(k, u) {
@@ -153,7 +171,12 @@ function vernam_decipher(q,x) {
 
 
 $(document).ready(function() {
-  $('input').focus(function() {
+  $("input[type='text']").focus(function() {
+    var key=$(this).attr("name");
+    document.getElementById(key+".error").innerHTML = "";
+    document.getElementById(key+".errlabel").innerHTML = "";        
+  });
+  $("input[type='password']").focus(function() {
     var key=$(this).attr("name");
     document.getElementById(key+".error").innerHTML = "";
     document.getElementById(key+".errlabel").innerHTML = "";        
