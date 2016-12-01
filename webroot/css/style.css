@@ -33,6 +33,7 @@ a {
 }
 
 #container {
+ overflow: hidden;
  min-height: 100%;
  position: relative;    
 }
@@ -44,7 +45,7 @@ a {
  text-transform: uppercase;
  font-size: .875em;
  color: #f7f5f2;
- background: #2e3133;
+ background: #2e3032;
  position: absolute;
  top: 0;
  left: 0;
@@ -697,7 +698,7 @@ div.theemailcrud button:active {
 
 #footer {
  height: 60px;
- background: #2e3133;
+ background: #2e3032;
  position: absolute;
  bottom: 0;
  width: 100%;
