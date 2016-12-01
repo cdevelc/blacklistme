@@ -5,6 +5,11 @@
  box-sizing: border-box;
  border: none;
 }
+html {
+ overflow-y: scroll;
+ height: 100%;
+}
+
 a, button {
  outline: 0;
  focus: 0;
@@ -12,6 +17,7 @@ a, button {
 }
 body {
  min-width: 300px;
+ height: 100%;
  font-family: Lato,Arial,Helvetica,sans-serif;
  font-size: 100%;
  line-height: 1.25;
@@ -24,6 +30,11 @@ body {
 }
 a {
  text-decoration: none;
+}
+
+#container {
+ min-height: 100%;
+ position: relative;    
 }
 
 #header .topline {
@@ -324,6 +335,7 @@ a {
 
 #main {
  display: block;
+ padding-bottom: 60px; 
 }
 #home {
  position: relative;
@@ -681,4 +693,12 @@ div.theemailcrud button:hover {
 }
 div.theemailcrud button:active {
  background: #d6d6d6;
+}
+
+#footer {
+ height: 60px;
+ background: #2e3133;
+ position: absolute;
+ bottom: 0;
+ width: 100%;
 }
