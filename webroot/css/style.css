@@ -6,7 +6,6 @@
  border: none;
 }
 html {
- overflow-y: scroll;
  height: 100%;
 }
 
@@ -26,8 +25,6 @@ body {
  margin: 0 auto;
  padding: 0;
  display: block;
- overflow-x: hidden;
- overflow-y: scroll; 
 }
 a {
  text-decoration: none;
