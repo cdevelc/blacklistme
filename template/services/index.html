@@ -1,17 +1,5 @@
 {{define "body"}}
 {{$page := .}}
-<script>
-$(document).ready(function() {
-   $('#infotab ul li a').click(function() {
-     $('#infotab ul li').removeClass('selected');
-     $(this).parent().addClass('selected');
-     var newTab = $(this).attr('href');
-     $('#infotab div.tabpanel').hide();
-     $(newTab).addClass('selected');
-     $(newTab).show();
-   });
- });
-</script>
 <div id="home" class="services" style="height: 280px">
   <div class="headline">
     <h1>BlackListMe</h1>
@@ -80,8 +68,51 @@ $(document).ready(function() {
       <table style="margin-left: 40px;">
         <tr><td style="text-align: left;">Users</td><td>10</td><td>100</td><td>1000</td><td>10000</td></tr>
         <tr><td style="text-align: left;">1 Year of API Query Service</td><td>$24</td><td>$240</td><td>$2,400</td><td>$24,000</td></tr>
+{{if .Vw.Useremail}}
+        <form action="{{.Vw.Base}}payment/enroll" id="paypars" method="POST">
+        <tr><td style="text-align: center;"><button id="stripemodal" class="payment">Pay Now</button></td>
+          <td><input type="radio" name="payamount" value="24" ></td>
+          <td><input type="radio" name="payamount" value="240" checked></td>
+          <td><input type="radio" name="payamount" value="2400" ></td>
+          <td><input type="radio" name="payamount" value="24000" ></td></tr>
+        <input type="hidden" name="token" value="">
+        </form>        
+{{end}}
       </table>
     </div>
   </div>
 </div>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+ var handler = StripeCheckout.configure({
+   key: "pk_test_6pRNASCoBOKtIshFeQd4XMUh",
+   image: "{{.Vw.Base}}img/groundy148.png",
+   locale: "auto",
+   email: "{{.Vw.Useremail}}",
+   allowRememberMe: false,
+   token: function(token) {
+     document.getElementById("paypars").elements["token"].value = token.id;
+     document.getElementById("paypars").submit();
+   }
+ });
+ $(document).ready(function() {
+   $('#infotab ul li a').click(function() {
+     $('#infotab ul li').removeClass('selected');
+     $(this).parent().addClass('selected');
+     var newTab = $(this).attr('href');
+     $('#infotab div.tabpanel').hide();
+     $(newTab).addClass('selected');
+     $(newTab).show();
+   });
+   document.getElementById('stripemodal').addEventListener('click', function(e) {
+     handler.open({ name: 'BlackListMe', description: '1 Year API Query Service', zipCode: true,
+                    amount: parseInt(document.getElementById("paypars").elements["payamount"].value, 10)*100,
+     });
+     e.preventDefault();
+   });
+   window.addEventListener('popstate', function() {
+     handler.close();
+   });
+ });
+</script>
 {{end}}

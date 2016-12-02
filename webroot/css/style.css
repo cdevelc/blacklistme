@@ -27,6 +27,7 @@ body {
  padding: 0;
  display: block;
  overflow-x: hidden;
+ overflow-y: scroll; 
 }
 a {
  text-decoration: none;
@@ -694,6 +695,22 @@ div.theemailcrud button:hover {
 }
 div.theemailcrud button:active {
  background: #d6d6d6;
+}
+button.payment {
+ border: 1px solid #de3723;
+ text-shadow: 0 -1px 1px #d02a2d;
+ padding: .3em;
+ font-size: 1em;
+ line-height: 1;
+ color: #fff;
+ background: linear-gradient(to bottom, #fd4f00 0%, #de3723 100%);
+ cursor: pointer;
+}
+button.payment:hover {
+ background: linear-gradient(to bottom, #e03b2e 0%, #d02a2d 100%);
+}
+button.payment:active {
+ background: linear-gradient(to bottom, #de3723 0%, #fd4f00 100%);
 }
 
 #footer {

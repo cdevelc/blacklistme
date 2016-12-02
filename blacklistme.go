@@ -9,6 +9,7 @@ import "blacklistme/controller/account"
 import "blacklistme/controller/support"
 import "blacklistme/controller/services"
 import "blacklistme/controller/api"
+import "blacklistme/controller/payment"
 import "os"
 import "fmt"
 import	"github.com/golang/glog"
@@ -95,6 +96,16 @@ func Dispatch(q *q29.ReqRsp) {
 		default:
 			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
 		}
+
+	case "payment":
+		if !payment.BeforeFilter(q) { return }
+		switch (q.Action) {
+		case "enroll":         payment.Enroll(q)
+		case "confirm":        payment.Confirm(q)			
+		default:
+			http.Error(q.W, q.R.URL.Path+" "+http.StatusText(404), 404)
+		}
+
 		
 	case "api":
 		if !api.BeforeFilter(q) { return }
