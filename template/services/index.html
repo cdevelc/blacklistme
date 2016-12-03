@@ -33,6 +33,7 @@
         <li>BlackListMe maintains a database of retired email addresses</li>
         <li style="background-color: #fff;">Verified domain owners may add and remove addresses in the database</li>
         <li style="background-color: #fff;">Use this to keep ex-employee email addresses from becoming spam sources</li>
+        <li style="background-color: #fff;">Keep unused addresses (like copier@yourdomain.com) from becoming spam sources</li> 
         <li>Email servers and services will query our database to improve their spam filtering</li>
       </ul>
     </div>
@@ -66,15 +67,17 @@
         <li>There is a 30 day free trial period</li>
       </ul>
       <table style="margin-left: 40px;">
-        <tr><td style="text-align: left;">Users</td><td>10</td><td>100</td><td>1000</td><td>10000</td></tr>
-        <tr><td style="text-align: left;">1 Year of API Query Service</td><td>$24</td><td>$240</td><td>$2,400</td><td>$24,000</td></tr>
+        <tr><td style="text-align: left;">Users</td>
+          {{range .Prices}}<td>{{.UserCount}}</td>{{end}}
+        </tr>
+        <tr><td style="text-align: left;">1 Year of API Query Service</td>
+          {{range .Prices}}<td>{{.DisplayCharge}}</td>{{end}}
+        </tr>
 {{if .Vw.Useremail}}
         <form action="{{.Vw.Base}}payment/enroll" id="paypars" method="POST">
-        <tr><td style="text-align: center;"><button id="stripemodal" class="payment">Pay Now</button></td>
-          <td><input type="radio" name="payamount" value="24" ></td>
-          <td><input type="radio" name="payamount" value="240" checked></td>
-          <td><input type="radio" name="payamount" value="2400" ></td>
-          <td><input type="radio" name="payamount" value="24000" ></td></tr>
+          <tr><td style="text-align: center;"><button id="stripemodal" class="payment">Pay Now</button></td>
+            {{range $ix,$el := .Prices}}<td><input type="radio" name="payamount" value="{{$el.StripeCharge}}" {{if eq $ix 1}}checked{{end}}></td>{{end}}
+          </tr>
         <input type="hidden" name="token" value="">
         </form>        
 {{end}}
@@ -84,8 +87,9 @@
 </div>
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
+{{if .Vw.Useremail}} 
  var handler = StripeCheckout.configure({
-   key: "pk_test_6pRNASCoBOKtIshFeQd4XMUh",
+   key: {{.Stripe_api_key}},
    image: "{{.Vw.Base}}img/groundy148.png",
    locale: "auto",
    email: "{{.Vw.Useremail}}",
@@ -95,6 +99,7 @@
      document.getElementById("paypars").submit();
    }
  });
+{{end}} 
  $(document).ready(function() {
    $('#infotab ul li a').click(function() {
      $('#infotab ul li').removeClass('selected');
@@ -104,15 +109,17 @@
      $(newTab).addClass('selected');
      $(newTab).show();
    });
+{{if .Vw.Useremail}}    
    document.getElementById('stripemodal').addEventListener('click', function(e) {
      handler.open({ name: 'BlackListMe', description: '1 Year API Query Service', zipCode: true,
-                    amount: parseInt(document.getElementById("paypars").elements["payamount"].value, 10)*100,
+                    amount: parseInt(document.getElementById("paypars").elements["payamount"].value, 10),
      });
      e.preventDefault();
    });
    window.addEventListener('popstate', function() {
      handler.close();
    });
+{{end}}
  });
 </script>
 {{end}}
